@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>ssr - 标签 - Forest</title>
+        <link>https://wxzforest.github.io/tags/ssr/</link>
+        <description>ssr - 标签 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Sun, 27 Jun 2021 21:18:46 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/tags/ssr/" rel="self" type="application/rss+xml" /><item>
+    <title>搭建ssr</title>
+    <link>https://wxzforest.github.io/blog/%E6%90%AD%E5%BB%BAssr/</link>
+    <pubDate>Sun, 27 Jun 2021 21:18:46 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E6%90%AD%E5%BB%BAssr/</guid>
+    <description><![CDATA[https://github.com/wxzForest/new-pac/blob/master/%E8%87%AA%E5%BB%BAssr%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B.md]]></description>
+</item></channel>
+</rss>

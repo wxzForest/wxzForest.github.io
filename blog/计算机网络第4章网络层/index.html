@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">计算机网络第4章（网络层） - Forest</title><meta name="Description" content="Forest的blog"><meta property="og:title" content="计算机网络第4章（网络层）" />
+<meta property="og:description" content="4.1、网络层概述简介 网络层的主要任务是实现网络互连，进而实现数据包在各网络之间的传输 这些异构型网络N1~N7如果只是需要各自内部通信，他们" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" /><meta property="og:image" content="https://wxzforest.github.io/images/yiquan.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-08T21:02:21+08:00" />
+<meta property="article:modified_time" content="2022-03-08T21:02:21+08:00" /><meta property="og:site_name" content="Forest" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wxzforest.github.io/images/yiquan.jpg"/>
+
+<meta name="twitter:title" content="计算机网络第4章（网络层）"/>
+<meta name="twitter:description" content="4.1、网络层概述简介 网络层的主要任务是实现网络互连，进而实现数据包在各网络之间的传输 这些异构型网络N1~N7如果只是需要各自内部通信，他们"/>
+<meta name="application-name" content="Forest">
+<meta name="apple-mobile-web-app-title" content="Forest">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" /><link rel="prev" href="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" /><link rel="next" href="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "计算机网络第4章（网络层）",
+        "inLanguage": "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/wxzforest.github.io\/blog\/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82\/"
+        },"genre": "posts","keywords": "TCP\/IP","wordcount":  8094 ,
+        "url": "https:\/\/wxzforest.github.io\/blog\/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82\/","datePublished": "2022-03-08T21:02:21+08:00","dateModified": "2022-03-08T21:02:21+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"authors": [{
+                    "@type": "Person",
+                    "name": "Forest"
+                }],"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="desktop-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/series/"> 系列 </a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="mobile-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/series/" title="">系列</a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#41网络层概述">4.1、网络层概述</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#42网络层提供的两种服务">4.2、网络层提供的两种服务</a>
+      <ul>
+        <li><a href="#面向连接的虚电路服务">面向连接的虚电路服务</a></li>
+        <li><a href="#无连接的数据报服务">无连接的数据报服务</a></li>
+        <li><a href="#虚电路服务与数据报服务的对比">虚电路服务与数据报服务的对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#43ipv4">4.3、IPv4</a>
+      <ul>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#分类编制的ipv4地址">分类编制的IPv4地址</a>
+          <ul>
+            <li><a href="#简介-1">简介</a></li>
+            <li><a href="#总结-1">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#划分子网的ipv4地址">划分子网的IPv4地址</a>
+          <ul>
+            <li><a href="#为什么要划分子网">为什么要划分子网</a></li>
+            <li><a href="#如何划分子网">如何划分子网</a></li>
+            <li><a href="#子网掩码">子网掩码</a></li>
+            <li><a href="#总结-2">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#无分类编址的ipv4地址">无分类编址的IPv4地址</a>
+          <ul>
+            <li><a href="#为什么使用无分类编址">为什么使用无分类编址</a></li>
+            <li><a href="#如何使用无分类编址">如何使用无分类编址</a></li>
+            <li><a href="#路由聚合构造超网">路由聚合（构造超网）</a></li>
+            <li><a href="#总结-3">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv4地址的应用规划">IPv4地址的应用规划</a>
+          <ul>
+            <li><a href="#定长的子网掩码flsmfixed-length-subnet-mask">定长的子网掩码FLSM（Fixed Length Subnet Mask）</a></li>
+            <li><a href="#变长的子网掩码vlsmvariable-length-subnet-mask">变长的子网掩码VLSM（Variable Length Subnet Mask）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#44ip数据报的发送和转发过程">4.4、IP数据报的发送和转发过程</a></li>
+    <li><a href="#45静态路由配置及其可能产生的路由环路问题">4.5、静态路由配置及其可能产生的路由环路问题</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#多种情况举例">多种情况举例</a></li>
+        <li><a href="#总结-4">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#46路由选择协议">4.6、路由选择协议</a>
+      <ul>
+        <li><a href="#概述-1">概述</a></li>
+        <li><a href="#路由信息协议rip">路由信息协议RIP</a></li>
+        <li><a href="#开放最短路径优先ospf">开放最短路径优先OSPF</a></li>
+        <li><a href="#边界网关协议bgp">边界网关协议BGP</a></li>
+        <li><a href="#直接封装ripospf和bgp报文的协议">直接封装RIP、OSPF和BGP报文的协议</a></li>
+      </ul>
+    </li>
+    <li><a href="#47ipv4数据报的首部格式">4.7、IPv4数据报的首部格式</a>
+      <ul>
+        <li><a href="#各字段的作用">各字段的作用</a></li>
+        <li><a href="#总结-5">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#48网际控制报文协议icmp">4.8、网际控制报文协议ICMP</a>
+      <ul>
+        <li><a href="#概念-1">概念</a></li>
+        <li><a href="#icmp差错报告报文">ICMP差错报告报文</a>
+          <ul>
+            <li><a href="#终点不可达">终点不可达</a></li>
+            <li><a href="#源点抑制">源点抑制</a></li>
+            <li><a href="#时间超过">时间超过</a></li>
+            <li><a href="#参数问题">参数问题</a></li>
+            <li><a href="#改变路由重定向">改变路由（重定向）</a></li>
+            <li><a href="#不应发送icmp差错报告报文情况">不应发送ICMP差错报告报文情况</a></li>
+          </ul>
+        </li>
+        <li><a href="#icmp应用举例">ICMP应用举例</a>
+          <ul>
+            <li><a href="#分组网间探测pingpacket-internet-groper">分组网间探测PING（Packet InterNet Groper）</a></li>
+            <li><a href="#跟踪路由traceroute">跟踪路由（traceroute）</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结-6">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#49虚拟专用网vpn与网络地址转换nat">4.9、虚拟专用网VPN与网络地址转换NAT</a>
+      <ul>
+        <li><a href="#虚拟专用网vpnvirtual-private-network">虚拟专用网VPN（Virtual Private Network）</a></li>
+        <li><a href="#网络地址转换natnetwork-address-translation">网络地址转换NAT（Network Address Translation）</a></li>
+        <li><a href="#总结-7">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">计算机网络第4章（网络层）</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'><i class="author fas fa-user-circle fa-fw"></i><span class='screen-reader-text'>  </span><a href='https://wxzforest.github.io/authors/Forest'>Forest</a></span>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E7%BD%91%E7%BB%9C/"><i class="far fa-folder fa-fw"></i>网络</a></span>&nbsp;<span class="post-category">和</span>&nbsp;<span class="post-series">系列 <a href="/series/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-list-alt fa-fw"></i>计算机网络学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-03-08">2022-03-08</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-03-08">2022-03-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 8094 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 17 分钟&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>系列 - 计算机网络学习笔记</span>
+                                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul>
+                                                    <li><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%E6%A6%82%E8%BF%B0/">计算机网络第1章（概述）</a></li>
+                                                    <li><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%E7%89%A9%E7%90%86%E5%B1%82/">计算机网络第2章（物理层）</a></li>
+                                                    <li><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">计算机网络第3章（数据链路层）</a></li><li><span class="active">计算机网络第4章（网络层）</span></li>
+                                                    <li><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/">计算机网络第5章（传输层）</a></li>
+                                                    <li><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/">计算机网络第6章（应用层）</a></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#41网络层概述">4.1、网络层概述</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#42网络层提供的两种服务">4.2、网络层提供的两种服务</a>
+      <ul>
+        <li><a href="#面向连接的虚电路服务">面向连接的虚电路服务</a></li>
+        <li><a href="#无连接的数据报服务">无连接的数据报服务</a></li>
+        <li><a href="#虚电路服务与数据报服务的对比">虚电路服务与数据报服务的对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#43ipv4">4.3、IPv4</a>
+      <ul>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#分类编制的ipv4地址">分类编制的IPv4地址</a>
+          <ul>
+            <li><a href="#简介-1">简介</a></li>
+            <li><a href="#总结-1">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#划分子网的ipv4地址">划分子网的IPv4地址</a>
+          <ul>
+            <li><a href="#为什么要划分子网">为什么要划分子网</a></li>
+            <li><a href="#如何划分子网">如何划分子网</a></li>
+            <li><a href="#子网掩码">子网掩码</a></li>
+            <li><a href="#总结-2">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#无分类编址的ipv4地址">无分类编址的IPv4地址</a>
+          <ul>
+            <li><a href="#为什么使用无分类编址">为什么使用无分类编址</a></li>
+            <li><a href="#如何使用无分类编址">如何使用无分类编址</a></li>
+            <li><a href="#路由聚合构造超网">路由聚合（构造超网）</a></li>
+            <li><a href="#总结-3">总结</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv4地址的应用规划">IPv4地址的应用规划</a>
+          <ul>
+            <li><a href="#定长的子网掩码flsmfixed-length-subnet-mask">定长的子网掩码FLSM（Fixed Length Subnet Mask）</a></li>
+            <li><a href="#变长的子网掩码vlsmvariable-length-subnet-mask">变长的子网掩码VLSM（Variable Length Subnet Mask）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#44ip数据报的发送和转发过程">4.4、IP数据报的发送和转发过程</a></li>
+    <li><a href="#45静态路由配置及其可能产生的路由环路问题">4.5、静态路由配置及其可能产生的路由环路问题</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#多种情况举例">多种情况举例</a></li>
+        <li><a href="#总结-4">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#46路由选择协议">4.6、路由选择协议</a>
+      <ul>
+        <li><a href="#概述-1">概述</a></li>
+        <li><a href="#路由信息协议rip">路由信息协议RIP</a></li>
+        <li><a href="#开放最短路径优先ospf">开放最短路径优先OSPF</a></li>
+        <li><a href="#边界网关协议bgp">边界网关协议BGP</a></li>
+        <li><a href="#直接封装ripospf和bgp报文的协议">直接封装RIP、OSPF和BGP报文的协议</a></li>
+      </ul>
+    </li>
+    <li><a href="#47ipv4数据报的首部格式">4.7、IPv4数据报的首部格式</a>
+      <ul>
+        <li><a href="#各字段的作用">各字段的作用</a></li>
+        <li><a href="#总结-5">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#48网际控制报文协议icmp">4.8、网际控制报文协议ICMP</a>
+      <ul>
+        <li><a href="#概念-1">概念</a></li>
+        <li><a href="#icmp差错报告报文">ICMP差错报告报文</a>
+          <ul>
+            <li><a href="#终点不可达">终点不可达</a></li>
+            <li><a href="#源点抑制">源点抑制</a></li>
+            <li><a href="#时间超过">时间超过</a></li>
+            <li><a href="#参数问题">参数问题</a></li>
+            <li><a href="#改变路由重定向">改变路由（重定向）</a></li>
+            <li><a href="#不应发送icmp差错报告报文情况">不应发送ICMP差错报告报文情况</a></li>
+          </ul>
+        </li>
+        <li><a href="#icmp应用举例">ICMP应用举例</a>
+          <ul>
+            <li><a href="#分组网间探测pingpacket-internet-groper">分组网间探测PING（Packet InterNet Groper）</a></li>
+            <li><a href="#跟踪路由traceroute">跟踪路由（traceroute）</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结-6">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#49虚拟专用网vpn与网络地址转换nat">4.9、虚拟专用网VPN与网络地址转换NAT</a>
+      <ul>
+        <li><a href="#虚拟专用网vpnvirtual-private-network">虚拟专用网VPN（Virtual Private Network）</a></li>
+        <li><a href="#网络地址转换natnetwork-address-translation">网络地址转换NAT（Network Address Translation）</a></li>
+        <li><a href="#总结-7">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="41网络层概述" class="headerLink">
+    <a href="#41%e7%bd%91%e7%bb%9c%e5%b1%82%e6%a6%82%e8%bf%b0" class="header-mark"></a>4.1、网络层概述</h1><h2 id="简介" class="headerLink">
+    <a href="#%e7%ae%80%e4%bb%8b" class="header-mark"></a>简介</h2><ul>
+<li>网络层的主要任务是<strong>实现网络互连</strong>，进而<strong>实现数据包在各网络之间的传输</strong></li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017134630948.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017134630948.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017134630948.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017134630948.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017134630948.jpg"
+        title="image-20201017134630948"></p>
+<blockquote>
+<p>这些异构型网络N1~N7如果只是需要各自内部通信，他们只要实现各自的物理层和数据链路层即可</p>
+<p>但是如果要将这些异构型网络互连起来，形成一个更大的互联网，就需要实现网络层设备路由器</p>
+<p>有时为了简单起见，可以不用画出这些网络，图中N1~N7，而将他们看做是一条链路即可</p>
+</blockquote>
+<ul>
+<li>
+<p>要实现网络层任务，需要解决一下主要问题：</p>
+<ul>
+<li>网络层向运输层提供怎样的服务（“可靠传输”还是“不可靠传输”）</li>
+</ul>
+<p>在数据链路层那课讲过的可靠传输，详情可以看那边的笔记：网络层对以下的<strong>分组丢失</strong>、<strong>分组失序</strong>、<strong>分组重复</strong>的传输错误采取措施，使得接收方能正确接受发送方发送的数据，就是<strong>可靠传输</strong>，反之，如果什么措施也不采取，则是<strong>不可靠传输</strong></p>
+<ul>
+<li>网络层寻址问题</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135644630.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135644630.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135644630.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135644630.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017135644630.jpg"
+        title="image-20201017135644630"></p>
+<ul>
+<li>路由选择问题</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135710478.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135710478.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135710478.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135710478.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017135710478.jpg"
+        title="image-20201017135710478"></p>
+<blockquote>
+<p>路由器收到数据后，是依据什么来决定将数据包从自己的哪个接口转发出去？</p>
+<p><strong>依据数据包的目的地址和路由器中的路由表</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135914985.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135914985.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135914985.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017135914985.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017135914985.jpg"
+        title="image-20201017135914985"></p>
+<p>但在实际当中，路由器是怎样知道这些路由记录？</p>
+<ul>
+<li>由用户或网络管理员进行人工配置，这种方法只适用于规模较小且网络拓扑不改变的小型互联网</li>
+<li><strong>另一种是实现各种路由选择协议，由路由器执行路由选择协议中所规定的路由选择算法，而自动得出路由表中的路有记录，这种方法更适合规模较大且网络拓扑经常改变的大型互联网</strong></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017142545630.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017142545630.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017142545630.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017142545630.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017142545630.jpg"
+        title="image-20201017142545630"></p>
+<blockquote>
+<p>补充 <strong>网络层（网际层）<strong>除了 <strong>IP协议</strong>外，还有之前介绍过的</strong>地址解析协议ARP</strong>，还有<strong>网际控制报文协议ICMP</strong>，<strong>网际组管理协议IGMP</strong></p>
+</blockquote>
+<h2 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>总结</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017140623851.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017140623851.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017140623851.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017140623851.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017140623851.jpg"
+        title="image-20201017140623851"></p>
+<hr>
+<h1 id="42网络层提供的两种服务" class="headerLink">
+    <a href="#42%e7%bd%91%e7%bb%9c%e5%b1%82%e6%8f%90%e4%be%9b%e7%9a%84%e4%b8%a4%e7%a7%8d%e6%9c%8d%e5%8a%a1" class="header-mark"></a>4.2、网络层提供的两种服务</h1><ul>
+<li>在计算机网络领域，网络层应该向运输层提供怎样的服务（“<strong>面向连接</strong>”还是“<strong>无连接</strong>”）曾引起了长期的争论。</li>
+<li>争论焦点的实质就是：<strong>在计算机通信中，可靠交付应当由谁来负责</strong>？是<strong>网络</strong>还是<strong>端系统</strong>？</li>
+</ul>
+<h2 id="面向连接的虚电路服务" class="headerLink">
+    <a href="#%e9%9d%a2%e5%90%91%e8%bf%9e%e6%8e%a5%e7%9a%84%e8%99%9a%e7%94%b5%e8%b7%af%e6%9c%8d%e5%8a%a1" class="header-mark"></a>面向连接的虚电路服务</h2><p><strong>一种观点：让网络负责可靠交付</strong></p>
+<ul>
+<li>这种观点认为，应借助于电信网的成功经验，让网络负责可靠交付，计算机网络应模仿电信网络，使用<strong>面向连接</strong>的通信方式。</li>
+<li>通信之前先建立<strong>虚电路</strong> (Virtual Circuit)，以保证双方通信所需的一切网络资源。</li>
+<li>如果再使用可靠传输的网络协议，就可使所发送的分组无差错按序到达终点，不丢失、不重复。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141425892.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141425892.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141425892.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141425892.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017141425892.jpg"
+        title="image-20201017141425892"></p>
+<p><strong>发送方</strong> 发送给 <strong>接收方</strong> 的所有分组都沿着同一条虚电路传送</p>
+<blockquote>
+<ul>
+<li>虚电路表示这只是一条逻辑上的连接，分组都沿着这条逻辑连接按照存储转发方式传送，而并不是真正建立了一条物理连接。</li>
+<li>请注意，电路交换的电话通信是先建立了一条真正的连接。</li>
+<li>因此分组交换的虚连接和电路交换的连接只是类似，但并不完全一样</li>
+</ul>
+</blockquote>
+<h2 id="无连接的数据报服务" class="headerLink">
+    <a href="#%e6%97%a0%e8%bf%9e%e6%8e%a5%e7%9a%84%e6%95%b0%e6%8d%ae%e6%8a%a5%e6%9c%8d%e5%8a%a1" class="header-mark"></a>无连接的数据报服务</h2><p><strong>另一种观点：网络提供数据报服务</strong></p>
+<ul>
+<li>互联网的先驱者提出了一种崭新的网络设计思路。</li>
+<li>网络层向上只提供简单灵活的、<strong>无连接的</strong>、<strong>尽最大努力交付</strong>的<strong>数据报服务</strong>。</li>
+<li>网络在发送分组时不需要先建立连接。每一个分组（即 IP 数据报）独立发送，与其前后的分组无关（不进行编号）。</li>
+<li><strong>网络层不提供服务质量的承诺</strong>。即所传送的分组可能出错、丢失、重复和失序（不按序到达终点），当然也不保证分组传送的时限。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141851030.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141851030.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141851030.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017141851030.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017141851030.jpg"
+        title="image-20201017141851030"></p>
+<p><strong>发送方</strong> 发送给 <strong>接收方</strong> 的分组可能沿着不同路径传送</p>
+<blockquote>
+<p><strong>尽最大努力交付</strong></p>
+<ul>
+<li>如果主机（即端系统）中的进程之间的通信需要是可靠的，那么就由网络的<strong>主机中的运输层负责可靠交付（包括差错处理、流量控制等）</strong> 。</li>
+<li><strong>采用这种设计思路的好处是</strong>：网络的造价大大降低，运行方式灵活，能够适应多种应用。</li>
+<li>互连网能够发展到今日的规模，充分证明了当初采用这种设计思路的正确性。</li>
+</ul>
+</blockquote>
+<h2 id="虚电路服务与数据报服务的对比" class="headerLink">
+    <a href="#%e8%99%9a%e7%94%b5%e8%b7%af%e6%9c%8d%e5%8a%a1%e4%b8%8e%e6%95%b0%e6%8d%ae%e6%8a%a5%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%af%b9%e6%af%94" class="header-mark"></a>虚电路服务与数据报服务的对比</h2><table>
+<thead>
+<tr>
+<th><strong>对比的方面</strong></th>
+<th><strong>虚电路服务</strong></th>
+<th><strong>数据报服务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>思路</strong></td>
+<td><strong>可靠通信应当由网络来保证</strong></td>
+<td><strong>可靠通信应当由用户主机来保证</strong></td>
+</tr>
+<tr>
+<td><strong>连接的建立</strong></td>
+<td><strong>必须有</strong></td>
+<td><strong>不需要</strong></td>
+</tr>
+<tr>
+<td><strong>终点地址</strong></td>
+<td><strong>仅在连接建立阶段使用，每个分组使用短的虚电路号</strong></td>
+<td><strong>每个分组都有终点的完整地址</strong></td>
+</tr>
+<tr>
+<td><strong>分组的转发</strong></td>
+<td><strong>属于同一条虚电路的分组均按照同一路由进行转发</strong></td>
+<td><strong>每个分组独立选择路由进行转发</strong></td>
+</tr>
+<tr>
+<td><strong>当结点出故障时</strong></td>
+<td><strong>所有通过出故障的结点的虚电路均不能工作</strong></td>
+<td><strong>出故障的结点可能会丢失分组，一些路由可能会发生变化</strong></td>
+</tr>
+<tr>
+<td><strong>分组的顺序</strong></td>
+<td><strong>总是按发送顺序到达终点</strong></td>
+<td><strong>到达终点时不一定按发送顺序</strong></td>
+</tr>
+<tr>
+<td><strong>端到端的差错处理和流量控制</strong></td>
+<td><strong>可以由网络负责，也可以由用户主机负责</strong></td>
+<td><strong>由用户主机负责</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="43ipv4" class="headerLink">
+    <a href="#43ipv4" class="header-mark"></a>4.3、IPv4</h1><h2 id="概述" class="headerLink">
+    <a href="#%e6%a6%82%e8%bf%b0" class="header-mark"></a>概述</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017143206060.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017143206060.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017143206060.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017143206060.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017143206060.jpg"
+        title="image-20201017143206060"></p>
+<h2 id="分类编制的ipv4地址" class="headerLink">
+    <a href="#%e5%88%86%e7%b1%bb%e7%bc%96%e5%88%b6%e7%9a%84ipv4%e5%9c%b0%e5%9d%80" class="header-mark"></a>分类编制的IPv4地址</h2><h3 id="简介-1" class="headerLink">
+    <a href="#%e7%ae%80%e4%bb%8b-1" class="header-mark"></a>简介</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017144317166.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017144317166.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017144317166.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017144317166.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017144317166.jpg"
+        title="image-20201017144317166"></p>
+<ul>
+<li>每一类地址都由两个固定长度的字段组成，其中一个字段是<strong>网络号 net-id</strong>，它标志主机（或路由器）所连接到的网络，而另一个字段则是<strong>主机号 host-id</strong>，它标志该主机（或路由器）。</li>
+<li>主机号在它前面的网络号所指明的网络范围内必须是唯一的。</li>
+<li>由此可见，<strong>一个 IP 地址在整个互联网范围内是唯一的</strong>。</li>
+</ul>
+<p><strong>A类地址</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145210533.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145210533.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145210533.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145210533.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017145210533.jpg"
+        title="image-20201017145210533"></p>
+<p><strong>B类地址</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145508001.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145508001.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145508001.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017145508001.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017145508001.jpg"
+        title="image-20201017145508001"></p>
+<p><strong>C类地址</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150204774.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150204774.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150204774.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150204774.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017150204774.jpg"
+        title="image-20201017150204774"></p>
+<p><strong>练习</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150543386.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150543386.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150543386.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017150543386.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017150543386.jpg"
+        title="image-20201017150543386"></p>
+<h3 id="总结-1" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-1" class="header-mark"></a>总结</h3><p><strong>IP 地址的指派范围</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152911541.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152911541.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152911541.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152911541.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017152911541.jpg"
+        title="image-20201017152911541"></p>
+<p><strong>一般不使用的特殊的 IP 地址</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152959586.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152959586.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152959586.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017152959586.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017152959586.jpg"
+        title="image-20201017152959586"></p>
+<p><strong>IP 地址的一些重要特点</strong></p>
+<p>(1) <strong>IP 地址是一种分等级的地址结构</strong>。分两个等级的好处是：</p>
+<ul>
+<li><strong>第一</strong>，IP 地址管理机构在分配 IP 地址时只分配网络号，而剩下的主机号则由得到该网络号的单位自行分配。这样就方便了 IP 地址的管理。</li>
+<li><strong>第二</strong>，路由器仅根据目的主机所连接的网络号来转发分组（而不考虑目的主机号），这样就可以使路由表中的项目数大幅度减少，从而减小了路由表所占的存储空间。</li>
+</ul>
+<p>(2) <strong>实际上 IP 地址是标志一个主机（或路由器）和一条链路的接口</strong>。</p>
+<ul>
+<li>当一个主机同时连接到两个网络上时，该主机就必须同时具有两个相应的 IP 地址，其网络号 net-id 必须是不同的。这种主机称为<strong>多归属主机</strong> (multihomed host)。</li>
+<li>由于一个路由器至少应当连接到两个网络（这样它才能将 IP 数据报从一个网络转发到另一个网络），因此<strong>一个路由器至少应当有两个不同的 IP 地址</strong>。</li>
+</ul>
+<p>(3) <strong>用转发器或网桥连接起来的若干个局域网仍为一个网络</strong>，因此这些局域网都具有同样的网络号 net-id。</p>
+<p>(4) <strong>所有分配到网络号 net-id 的网络，无论是范围很小的局域网，还是可能覆盖很大地理范围的广域网，都是平等的。</strong></p>
+<h2 id="划分子网的ipv4地址" class="headerLink">
+    <a href="#%e5%88%92%e5%88%86%e5%ad%90%e7%bd%91%e7%9a%84ipv4%e5%9c%b0%e5%9d%80" class="header-mark"></a>划分子网的IPv4地址</h2><h3 id="为什么要划分子网" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%92%e5%88%86%e5%ad%90%e7%bd%91" class="header-mark"></a>为什么要划分子网</h3><p>在 ARPANET 的早期，IP 地址的设计确实不够合理：</p>
+<ul>
+<li>IP 地址空间的利用率有时很低。</li>
+<li>给每一个物理网络分配一个网络号会使路由表变得太大因而使网络性能变坏。</li>
+<li>两级的 IP 地址不够灵活。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154645198.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154645198.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154645198.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154645198.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017154645198.jpg"
+        title="image-20201017154645198"></p>
+<p>如果想要将原来的网络划分成三个独立的网路</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154852896.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154852896.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154852896.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017154852896.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017154852896.jpg"
+        title="image-20201017154852896"></p>
+<p>所以是否可以从主机号部分借用一部分作为子网号</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155026814.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155026814.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155026814.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155026814.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017155026814.jpg"
+        title="image-20201017155026814"></p>
+<blockquote>
+<p>但是如果未在图中标记子网号部分，那么我们和计算机又如何知道分类地址中主机号有多少比特被用作子网号了呢？</p>
+<p>所以就有了划分子网的工具：<strong>子网掩码</strong></p>
+<ul>
+<li>从 1985 年起在 IP 地址中又增加了一个“<strong>子网号字段</strong>”，使两级的 IP 地址变成为<strong>三级的 IP 地址</strong>。</li>
+<li>这种做法叫做<strong>划分子网</strong> (subnetting) 。</li>
+<li>划分子网已成为互联网的正式标准协议。</li>
+</ul>
+</blockquote>
+<h3 id="如何划分子网" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e5%88%92%e5%88%86%e5%ad%90%e7%bd%91" class="header-mark"></a>如何划分子网</h3><p>基本思路</p>
+<ul>
+<li>划分子网纯属一个<strong>单位内部的事情</strong>。单位对外仍然表现为没有划分子网的网络。</li>
+<li>从主机号<strong>借用</strong>若干个位作为<strong>子网号</strong> subnet-id，而主机号 host-id 也就相应减少了若干个位。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155930011.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155930011.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155930011.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017155930011.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017155930011.jpg"
+        title="image-20201017155930011"></p>
+<ul>
+<li>凡是从其他网络发送给本单位某个主机的 IP 数据报，仍然是根据 IP 数据报的<strong>目的网络号</strong> net-id，先找到连接在本单位网络上的路由器。</li>
+<li>然后<strong>此路由器</strong>在收到 IP 数据报后，再按<strong>目的网络号</strong> net-id 和<strong>子网号</strong> subnet-id 找到目的子网。</li>
+<li>最后就将 IP 数据报直接交付目的主机。</li>
+</ul>
+<p>划分为三个子网后对外仍是一个网络</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160116239.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160116239.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160116239.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160116239.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017160116239.jpg"
+        title="image-20201017160116239"></p>
+<blockquote>
+<ul>
+<li><strong>优点</strong>
+<ol>
+<li>减少了 IP 地址的浪费</li>
+<li>使网络的组织更加灵活</li>
+<li>更便于维护和管理</li>
+</ol>
+</li>
+<li><strong>划分子网纯属一个单位内部的事情，对外部网络透明</strong>，对外仍然表现为没有划分子网的一个网络。</li>
+</ul>
+</blockquote>
+<h3 id="子网掩码" class="headerLink">
+    <a href="#%e5%ad%90%e7%bd%91%e6%8e%a9%e7%a0%81" class="header-mark"></a>子网掩码</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160252066.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160252066.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160252066.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017160252066.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017160252066.jpg"
+        title="image-20201017160252066"></p>
+<blockquote>
+<p><strong>(IP 地址) AND (子网掩码) = 网络地址</strong> 重要，下面很多相关知识都会用到</p>
+</blockquote>
+<p>举例</p>
+<p>例子1</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161651058.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161651058.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161651058.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161651058.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017161651058.jpg"
+        title="image-20201017161651058"></p>
+<p>例子2</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161719339.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161719339.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161719339.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017161719339.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017161719339.jpg"
+        title="image-20201017161719339"></p>
+<p><strong>默认子网掩码</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162807076.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162807076.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162807076.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162807076.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017162807076.jpg"
+        title="image-20201017162807076"></p>
+<h3 id="总结-2" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-2" class="header-mark"></a>总结</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162938612.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162938612.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162938612.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017162938612.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017162938612.jpg"
+        title="image-20201017162938612"></p>
+<blockquote>
+<ul>
+<li>子网掩码是一个网络或一个子网的重要属性。</li>
+<li>路由器在和相邻路由器交换路由信息时，必须把自己所在网络（或子网）的子网掩码告诉相邻路由器。</li>
+<li>路由器的路由表中的每一个项目，除了要给出目的网络地址外，还必须同时给出该网络的子网掩码。</li>
+<li>若一个路由器连接在两个子网上，就拥有两个网络地址和两个子网掩码。</li>
+</ul>
+</blockquote>
+<h2 id="无分类编址的ipv4地址" class="headerLink">
+    <a href="#%e6%97%a0%e5%88%86%e7%b1%bb%e7%bc%96%e5%9d%80%e7%9a%84ipv4%e5%9c%b0%e5%9d%80" class="header-mark"></a>无分类编址的IPv4地址</h2><h3 id="为什么使用无分类编址" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bd%bf%e7%94%a8%e6%97%a0%e5%88%86%e7%b1%bb%e7%bc%96%e5%9d%80" class="header-mark"></a>为什么使用无分类编址</h3><p><strong>无分类域间路由选择 CIDR</strong> (Classless Inter-Domain Routing)。</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017164031532.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017164031532.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017164031532.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017164031532.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017164031532.jpg"
+        title="image-20201017164031532"></p>
+<blockquote>
+<p><strong>CIDR 最主要的特点</strong></p>
+<ul>
+<li>CIDR使用各种长度的“<strong>网络前缀</strong>”(network-prefix)来代替分类地址中的网络号和子网号。</li>
+<li><strong>IP 地址从三级编址（使用子网掩码）又回到了两级编址</strong>。</li>
+</ul>
+</blockquote>
+<h3 id="如何使用无分类编址" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e6%97%a0%e5%88%86%e7%b1%bb%e7%bc%96%e5%9d%80" class="header-mark"></a>如何使用无分类编址</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165037268.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165037268.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165037268.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165037268.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017165037268.jpg"
+        title="image-20201017165037268"></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165113442.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165113442.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165113442.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165113442.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017165113442.jpg"
+        title="image-20201017165113442"></p>
+<h3 id="路由聚合构造超网" class="headerLink">
+    <a href="#%e8%b7%af%e7%94%b1%e8%81%9a%e5%90%88%e6%9e%84%e9%80%a0%e8%b6%85%e7%bd%91" class="header-mark"></a>路由聚合（构造超网）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165615915.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165615915.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165615915.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017165615915.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017165615915.jpg"
+        title="image-20201017165615915"></p>
+<h3 id="总结-3" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-3" class="header-mark"></a>总结</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017170552495.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017170552495.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017170552495.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201017170552495.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201017170552495.jpg"
+        title="image-20201017170552495"></p>
+<h2 id="ipv4地址的应用规划" class="headerLink">
+    <a href="#ipv4%e5%9c%b0%e5%9d%80%e7%9a%84%e5%ba%94%e7%94%a8%e8%a7%84%e5%88%92" class="header-mark"></a>IPv4地址的应用规划</h2><p>给定一个IPv4地址快，如何将其划分成几个更小的地址块，并将这些地址块分配给互联网中不同网络，进而可以给各网络中的主机和路由器接口分配IPv4地址</p>
+<h3 id="定长的子网掩码flsmfixed-length-subnet-mask" class="headerLink">
+    <a href="#%e5%ae%9a%e9%95%bf%e7%9a%84%e5%ad%90%e7%bd%91%e6%8e%a9%e7%a0%81flsmfixed-length-subnet-mask" class="header-mark"></a>定长的子网掩码FLSM（Fixed Length Subnet Mask）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143550103.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143550103.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143550103.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143550103.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018143550103.jpg"
+        title="image-20201018143550103"></p>
+<p><strong>划分子网的IPv4就是定长的子网掩码</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140809079.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140809079.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140809079.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140809079.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018140809079.jpg"
+        title="image-20201018140809079"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140916631.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140916631.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140916631.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018140916631.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018140916631.jpg"
+        title="image-20201018140916631"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018141132446.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018141132446.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018141132446.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018141132446.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018141132446.jpg"
+        title="image-20201018141132446"></p>
+<blockquote>
+<p>通过上面步骤分析，就可以从子网1~8中任选5个分配给左图中的N1~N5</p>
+<p><strong>采用定长的子网掩码划分，只能划分出2^n个子网，其中n是从主机号部分借用的用来作为子网号的比特数量，每个子网所分配的IP地址数量相同</strong></p>
+<p><strong>但是也因为每个子网所分配的IP地址数量相同，不够灵活，容易造成IP地址的浪费</strong></p>
+</blockquote>
+<h3 id="变长的子网掩码vlsmvariable-length-subnet-mask" class="headerLink">
+    <a href="#%e5%8f%98%e9%95%bf%e7%9a%84%e5%ad%90%e7%bd%91%e6%8e%a9%e7%a0%81vlsmvariable-length-subnet-mask" class="header-mark"></a>变长的子网掩码VLSM（Variable Length Subnet Mask）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143632352.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143632352.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143632352.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143632352.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018143632352.jpg"
+        title="image-20201018143632352"></p>
+<p><strong>无分类编址的IPv4就是变长的子网掩码</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018142333145.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018142333145.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018142333145.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018142333145.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018142333145.jpg"
+        title="image-20201018142333145"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143344440.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143344440.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143344440.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018143344440.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018143344440.jpg"
+        title="image-20201018143344440"></p>
+<hr>
+<h1 id="44ip数据报的发送和转发过程" class="headerLink">
+    <a href="#44ip%e6%95%b0%e6%8d%ae%e6%8a%a5%e7%9a%84%e5%8f%91%e9%80%81%e5%92%8c%e8%bd%ac%e5%8f%91%e8%bf%87%e7%a8%8b" class="header-mark"></a>4.4、IP数据报的发送和转发过程</h1><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018144335297.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018144335297.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018144335297.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018144335297.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018144335297.jpg"
+        title="image-20201018144335297"></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151314019.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151314019.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151314019.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151314019.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018151314019.jpg"
+        title="image-20201018151314019"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150151171.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150151171.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150151171.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150151171.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018150151171.jpg"
+        title="image-20201018150151171"></p>
+<p>源主机如何知道目的主机是否与自己在同一个网络中，是直接交付，还是间接交付？</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150223497.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150223497.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150223497.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150223497.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018150223497.jpg"
+        title="image-20201018150223497"></p>
+<blockquote>
+<p>可以通过<strong>目的地址IP</strong>和<strong>源地址的子网掩码</strong>进行<strong>逻辑与运算</strong>得到<strong>目的网络地址</strong></p>
+<ul>
+<li>如果<strong>目的网络地址</strong>和<strong>源网络地址</strong> <strong>相同</strong>，就是<strong>在同一个网络</strong>中，属于<strong>直接交付</strong></li>
+<li>如果<strong>目的网络地址</strong>和<strong>源网络地址</strong> <strong>不相同</strong>，就<strong>不在同一个网络</strong>中，属于<strong>间接交付</strong>，传输给主机所在网络的<strong>默认网关</strong>（路由器——下图会讲解）,由默认网关帮忙转发</li>
+</ul>
+</blockquote>
+<p>主机C如何知道路由器R的存在？</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018145501063.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018145501063.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018145501063.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018145501063.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018145501063.jpg"
+        title="image-20201018145501063"></p>
+<blockquote>
+<p>用户为了让本网络中的主机能和其他网络中的主机进行通信，就必须给其指定本网络的一个路由器的接口，由该路由器帮忙进行转发，<strong>所指定的路由器</strong>，也被称为<strong>默认网关</strong></p>
+<p>例如。路由器的接口0的IP地址192.168.0.128做为左边网络的默认网关</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150029179.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150029179.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150029179.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018150029179.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018150029179.jpg"
+        title="image-20201018150029179"></p>
+<blockquote>
+<p>主机A会将该IP数据报传输给自己的默认网关，也就是图中所示的路由器接口0</p>
+</blockquote>
+<p>路由器收到IP数据报后如何转发？</p>
+<ul>
+<li>检查IP数据报首部是否出错：
+<ul>
+<li>若出错，则直接丢弃该IP数据报并通告源主机</li>
+<li>若没有出错，则进行转发</li>
+</ul>
+</li>
+<li>根据IP数据报的目的地址在路由表中查找匹配的条目：
+<ul>
+<li>若找到匹配的条目，则转发给条目中指示的吓一跳</li>
+<li>若找不到，则丢弃该数据报并通告源主机</li>
+</ul>
+</li>
+</ul>
+<p>假设IP数据报首部没有出错，路由器取出IP数据报首部各地址字段的值</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151108989.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151108989.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151108989.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151108989.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018151108989.jpg"
+        title="image-20201018151108989"></p>
+<p>接下来路由器对该IP数据报进行查表转发</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151528027.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151528027.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151528027.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151528027.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018151528027.jpg"
+        title="image-20201018151528027"></p>
+<blockquote>
+<p>逐条检查路由条目，将目的地址与路由条目中的地址掩码进行逻辑与运算得到目的网络地址，然后与路由条目中的目的网络进行比较，如果相同，则这条路由条目就是匹配的路由条目，按照它的下一条指示，图中所示的也就是接口1转发该IP数据报</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151956275.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151956275.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151956275.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018151956275.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018151956275.jpg"
+        title="image-20201018151956275"></p>
+<p>路由器是隔离广播域的</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018152040610.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018152040610.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018152040610.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018152040610.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018152040610.jpg"
+        title="image-20201018152040610"></p>
+<hr>
+<h1 id="45静态路由配置及其可能产生的路由环路问题" class="headerLink">
+    <a href="#45%e9%9d%99%e6%80%81%e8%b7%af%e7%94%b1%e9%85%8d%e7%bd%ae%e5%8f%8a%e5%85%b6%e5%8f%af%e8%83%bd%e4%ba%a7%e7%94%9f%e7%9a%84%e8%b7%af%e7%94%b1%e7%8e%af%e8%b7%af%e9%97%ae%e9%a2%98" class="header-mark"></a>4.5、静态路由配置及其可能产生的路由环路问题</h1><h2 id="概念" class="headerLink">
+    <a href="#%e6%a6%82%e5%bf%b5" class="header-mark"></a>概念</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018155702081.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018155702081.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018155702081.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018155702081.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018155702081.jpg"
+        title="image-20201018155702081"></p>
+<h2 id="多种情况举例" class="headerLink">
+    <a href="#%e5%a4%9a%e7%a7%8d%e6%83%85%e5%86%b5%e4%b8%be%e4%be%8b" class="header-mark"></a>多种情况举例</h2><p><strong>静态路由配置</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160349375.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160349375.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160349375.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160349375.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018160349375.jpg"
+        title="image-20201018160349375"></p>
+<p><strong>默认路由</strong></p>
+<p>举例</p>
+<p>默认路由可以被所有网络匹配，但路由匹配有优先级，默认路由是优先级最低的</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160906284.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160906284.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160906284.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018160906284.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018160906284.jpg"
+        title="image-20201018160906284"></p>
+<p><strong>特定主机路由</strong></p>
+<p>举例</p>
+<p>有时候，我们可以给路由器添加针对某个主机的特定主机路由条目</p>
+<p>一般用于网络管理人员对网络的管理和测试</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161440257.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161440257.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161440257.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161440257.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018161440257.jpg"
+        title="image-20201018161440257"></p>
+<blockquote>
+<p>多条路由可选，匹配路由最具体的</p>
+</blockquote>
+<p><strong>静态路由配置错误导致路由环路</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161542579.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161542579.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161542579.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018161542579.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018161542579.jpg"
+        title="image-20201018161542579"></p>
+<p>假设将R2的路由表中第三条目录配置错了下一跳</p>
+<p>这导致R2和R3之间产生了路由环路</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162041966.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162041966.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162041966.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162041966.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018162041966.jpg"
+        title="image-20201018162041966"></p>
+<p><strong>聚合了不存在的网络而导致路由环路</strong></p>
+<p>举例</p>
+<p>正常情况</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162333671.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162333671.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162333671.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162333671.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018162333671.jpg"
+        title="image-20201018162333671"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162759562.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162759562.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162759562.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018162759562.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018162759562.jpg"
+        title="image-20201018162759562"></p>
+<p>错误情况</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163323343.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163323343.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163323343.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163323343.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018163323343.jpg"
+        title="image-20201018163323343"></p>
+<p>解决方法</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163933715.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163933715.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163933715.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018163933715.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018163933715.jpg"
+        title="image-20201018163933715"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164453398.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164453398.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164453398.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164453398.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018164453398.jpg"
+        title="image-20201018164453398"></p>
+<blockquote>
+<p>黑洞路由的下一跳为null0，这是路由器内部的虚拟接口，IP数据报进入它后就被丢弃</p>
+</blockquote>
+<p><strong>网络故障而导致路由环路</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164811811.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164811811.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164811811.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164811811.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018164811811.jpg"
+        title="image-20201018164811811"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164913684.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164913684.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164913684.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018164913684.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018164913684.jpg"
+        title="image-20201018164913684"></p>
+<p>解决方法</p>
+<p>添加故障的网络为黑洞路由</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165122023.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165122023.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165122023.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165122023.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018165122023.jpg"
+        title="image-20201018165122023"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165153517.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165153517.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165153517.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165153517.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018165153517.jpg"
+        title="image-20201018165153517"></p>
+<p>假设。一段时间后故障网络恢复了</p>
+<p>R1又自动地得出了其接口0的直连网络的路由条目</p>
+<p>针对该网络的黑洞网络会自动失效</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165328319.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165328319.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165328319.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165328319.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018165328319.jpg"
+        title="image-20201018165328319"></p>
+<p>如果又故障</p>
+<p>则生效该网络的黑洞网络</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165521938.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165521938.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165521938.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165521938.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018165521938.jpg"
+        title="image-20201018165521938"></p>
+<h2 id="总结-4" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-4" class="header-mark"></a>总结</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165709294.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165709294.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165709294.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201018165709294.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201018165709294.jpg"
+        title="image-20201018165709294"></p>
+<hr>
+<h1 id="46路由选择协议" class="headerLink">
+    <a href="#46%e8%b7%af%e7%94%b1%e9%80%89%e6%8b%a9%e5%8d%8f%e8%ae%ae" class="header-mark"></a>4.6、路由选择协议</h1><h2 id="概述-1" class="headerLink">
+    <a href="#%e6%a6%82%e8%bf%b0-1" class="header-mark"></a>概述</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134827343.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134827343.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134827343.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134827343.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019134827343.jpg"
+        title="image-20201019134827343"></p>
+<p><strong>因特网所采用的路由选择协议的主要特点</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134946971.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134946971.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134946971.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019134946971.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019134946971.jpg"
+        title="image-20201019134946971"></p>
+<p><strong>因特网采用分层次的路由选择协议</strong></p>
+<ul>
+<li><strong>自治系统 AS</strong>：在单一的技术管理下的一组路由器，而这些路由器使用一种 AS 内部的路由选择协议和共同的度量以确定分组在该 AS 内的路由，同时还使用一种 AS 之间的路由选择协议用以确定分组在 AS之间的路由。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135122326.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135122326.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135122326.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135122326.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019135122326.jpg"
+        title="image-20201019135122326"></p>
+<blockquote>
+<p>自治系统之间的路由选择简称为域间路由选择，自治系统内部的路由选择简称为域内路由选择</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135328925.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135328925.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135328925.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019135328925.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019135328925.jpg"
+        title="image-20201019135328925"></p>
+<blockquote>
+<p>域间路由选择使用外部网关协议EGP这个类别的路由选择协议</p>
+<p>域内路由选择使用内部网关协议IGP这个类别的路由选择协议</p>
+<p><strong>网关协议</strong>的名称可称为<strong>路由协议</strong></p>
+</blockquote>
+<p><strong>常见的路由选择协议</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140009740.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140009740.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140009740.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140009740.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019140009740.jpg"
+        title="image-20201019140009740"></p>
+<p><strong>路由器的基本结构</strong></p>
+<p>路由器是一种具有多个输入端口，和输出端口的专用计算机，其任务是转发分组</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140234652.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140234652.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140234652.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019140234652.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019140234652.jpg"
+        title="image-20201019140234652"></p>
+<p>路由器结构可划分为两大部分：</p>
+<p>1、<strong>分组转发部分</strong></p>
+<p>由三部分构成</p>
+<ul>
+<li>
+<p>交换结构</p>
+</li>
+<li>
+<p>一组输入端口：</p>
+<p>信号从某个输入端口进入路由器</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141149194.jpg" alt="image-20201019141149194" style="zoom:50%;" />
+<p>物理层将信号转换成比特流，送交数据链路层处理</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141210774.jpg" alt="image-20201019141210774" style="zoom: 50%;" />
+<p>数据链路层识别从比特流中识别出帧，去掉帧头和帧尾后，送交网络层处理</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141242246.jpg" alt="image-20201019141242246" style="zoom:50%;" />
+<p>如果送交网络层的分组是普通待转发的数据分组</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141305650.jpg" alt="image-20201019141305650" style="zoom:50%;" />
+<p>则根据分组首部中的目的地址进行查表转发</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141327380.jpg" alt="image-20201019141327380" style="zoom:50%;" />
+<p>若找不到匹配的转发条目，则丢弃该分组，否则，按照匹配条目中所指示的端口进行转发</p>
+</li>
+<li>
+<p>一组输出端口</p>
+<p>网络层更新数据分组首部中某些字段的值，例如将数据分组的生存时间减1，然后送交数据链路层进行封装</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141745375.jpg" alt="image-20201019141745375" style="zoom:50%;" />
+<p>数据链路层将数据分组封装成帧，交给物理层处理</p>
+<img src="计算机网络第4章网络层.assets/image-20201019141838032.jpg" alt="image-20201019141838032" style="zoom:50%;" />
+<p>物理层将帧看成比特流将其变换成相应的电信号进行发送</p>
+</li>
+</ul>
+<blockquote>
+<p>路由器的各端口还会有输入缓冲区和输出缓冲区</p>
+<ul>
+<li>
+<p>输入缓冲区用来暂存新进入路由器但还来不及处理的分组</p>
+</li>
+<li>
+<p>输出缓冲区用来暂存已经处理完毕但还来不及发送的分组</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019143040253.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019143040253.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019143040253.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019143040253.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019143040253.jpg"
+        title="image-20201019143040253"></p>
+<p><strong>路由器的端口一般都具有输入和输出功能</strong>，这些实例分出了输入端口和输出端口是更好演示路由基本工作过程</p>
+</blockquote>
+<p>2、<strong>路由选择部分</strong></p>
+<ul>
+<li>
+<p>路由选择部分的核心构件是路由选择处理机，它的任务是根据所使用的路由选择协议。周期性地与其他路由器 进行路由信息的交互，来更新路由表</p>
+<p>如果送交给输入端口的网络层的分组是路由器之间交换路由信息的路由报文，则把这种分组送交给路由选择处理机</p>
+<img src="计算机网络第4章网络层.assets/image-20201019142228360.jpg" alt="image-20201019142228360" style="zoom:50%;" />
+<p>路由选择处理机根据分组的内容来更新自己的<strong>路由表</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142415055.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142415055.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142415055.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142415055.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019142415055.jpg"
+        title="image-20201019142415055"></p>
+<p>路由选择处理机还会周期性地给其他路由器发送自己所知道的路由信息</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142924889.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142924889.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142924889.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019142924889.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019142924889.jpg"
+        title="image-20201019142924889"></p>
+</li>
+</ul>
+<h2 id="路由信息协议rip" class="headerLink">
+    <a href="#%e8%b7%af%e7%94%b1%e4%bf%a1%e6%81%af%e5%8d%8f%e8%ae%aerip" class="header-mark"></a>路由信息协议RIP</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019144915687.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019144915687.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019144915687.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019144915687.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019144915687.jpg"
+        title="image-20201019144915687"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145247606.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145247606.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145247606.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145247606.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019145247606.jpg"
+        title="image-20201019145247606"></p>
+<p><strong>RIP的基本工作过程</strong></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145510947.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145510947.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145510947.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145510947.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019145510947.jpg"
+        title="image-20201019145510947"></p>
+<p><strong>RIP的路由条目的更新规则</strong></p>
+<p>举例1</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145627339.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145627339.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145627339.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019145627339.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019145627339.jpg"
+        title="image-20201019145627339"></p>
+<blockquote>
+<p>路由器C的表到达各目的网络的下一条都记为问号，可以理解为路由器D并不需要关心路由器C的这些内容</p>
+<p>假设路由器C的RIP更新报文发送周期到了，则路由器C将自己路由表中的相关路由信息封装到RIP更新报文中发送给路由器D</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150120900.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150120900.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150120900.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150120900.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019150120900.jpg"
+        title="image-20201019150120900"></p>
+<blockquote>
+<p>路由器C能到达这些网络，说明路由器C的相邻路由器也能到达，只是比路由器C的距离大1，于是根据距离的对比，路由器D更新自己的路由表</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150412666.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150412666.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150412666.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150412666.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019150412666.jpg"
+        title="image-20201019150412666"></p>
+<p>举例2</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150525711.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150525711.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150525711.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019150525711.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019150525711.jpg"
+        title="image-20201019150525711"></p>
+<p><strong>RIP存在“坏消息传播得慢”的问题</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151041492.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151041492.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151041492.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151041492.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019151041492.jpg"
+        title="image-20201019151041492"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151135255.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151135255.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151135255.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151135255.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019151135255.jpg"
+        title="image-20201019151135255"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151332767.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151332767.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151332767.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151332767.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019151332767.jpg"
+        title="image-20201019151332767"></p>
+<p>解决方法</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151639181.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151639181.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151639181.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019151639181.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019151639181.jpg"
+        title="image-20201019151639181"></p>
+<blockquote>
+<p>但是，这些方法也不能完全解决“坏消息传播得慢”的问题，这是距离向量的本质决定</p>
+</blockquote>
+<p><strong>总结</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019152526098.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019152526098.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019152526098.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019152526098.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019152526098.jpg"
+        title="image-20201019152526098"></p>
+<blockquote>
+<p>RIP 协议的优缺点</p>
+<p>优点：</p>
+<ol>
+<li>实现简单，开销较小。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>
+<p>RIP 限制了网络的规模，它能使用的最大距离为 15（16 表示不可达）。</p>
+</li>
+<li>
+<p>路由器之间交换的路由信息是路由器中的完整路由表，因而随着网络规模的扩大，开销也就增加。</p>
+</li>
+<li>
+<p>“坏消息传播得慢”，使更新过程的收敛时间过长。</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="开放最短路径优先ospf" class="headerLink">
+    <a href="#%e5%bc%80%e6%94%be%e6%9c%80%e7%9f%ad%e8%b7%af%e5%be%84%e4%bc%98%e5%85%88ospf" class="header-mark"></a>开放最短路径优先OSPF</h2><p><strong>开放最短路径优先 OSPF (Open Shortest Path First)</strong></p>
+<p><strong>注意</strong>：OSPF 只是一个协议的名字，它并不表示其他的路由选择协议不是“最短路径优先”。</p>
+<p><strong>概念</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161841695.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161841695.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161841695.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161841695.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019161841695.jpg"
+        title="image-20201019161841695"></p>
+<p><strong>问候（Hello）分组</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161653875.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161653875.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161653875.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019161653875.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019161653875.jpg"
+        title="image-20201019161653875"></p>
+<blockquote>
+<p>IP数据报首部中协议号字段的取值应为89，来表明IP数据报的数据载荷为OSPF分组</p>
+</blockquote>
+<p><strong>发送链路状态通告LSA</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162341151.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162341151.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162341151.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162341151.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019162341151.jpg"
+        title="image-20201019162341151"></p>
+<blockquote>
+<p>洪泛法有点类似于广播，就是从一个接口进来，从其他剩余所有接口出去</p>
+</blockquote>
+<p><strong>链路状态数据库同步</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162933483.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162933483.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162933483.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019162933483.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019162933483.jpg"
+        title="image-20201019162933483"></p>
+<p><strong>使用SPF算法计算出各自路由器到达其他路由器的最短路径</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163148068.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163148068.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163148068.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163148068.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019163148068.jpg"
+        title="image-20201019163148068"></p>
+<p><strong>OSPF五种分组类型</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163250129.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163250129.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163250129.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163250129.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019163250129.jpg"
+        title="image-20201019163250129"></p>
+<p><strong>OSPF的基本工作过程</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163746254.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163746254.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163746254.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019163746254.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019163746254.jpg"
+        title="image-20201019163746254"></p>
+<p><strong>OSPF在多点接入网络中路由器邻居关系建立</strong></p>
+<p>如果不采用其他机制，将会产生大量的多播分组</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019164657606.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019164657606.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019164657606.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019164657606.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019164657606.jpg"
+        title="image-20201019164657606"></p>
+<blockquote>
+<p>若DR出现问题，则由BDR顶替DR</p>
+</blockquote>
+<p><strong>为了使OSPF能够用于规模很大的网络，OSPF把一个自治系统再划分为若干个更小的范围，叫做区域（Area）</strong></p>
+<ul>
+<li>
+<p>在该自治系统内，所有路由器都使用OSPF协议，OSPF将该自治系统再划分成4个更小的区域</p>
+</li>
+<li>
+<p>每个区域都有一个32比特的区域标识符</p>
+</li>
+<li>
+<p>主干区域的区域标识符必须为0，主干区域用于连通其他区域</p>
+</li>
+<li>
+<p>其他区域的区域标识符不能为0且不相同</p>
+</li>
+<li>
+<p>每个区域一般不应包含路由器超过200个</p>
+</li>
+<li>
+<p>划分区域的好处就是，利用洪泛法交换链路状态信息局限于每一个区域而不是自治系统，这样减少整个网络上的通信量</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170100568.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170100568.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170100568.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170100568.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019170100568.jpg"
+        title="image-20201019170100568"></p>
+<p><strong>总结</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170217622.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170217622.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170217622.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019170217622.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019170217622.jpg"
+        title="image-20201019170217622"></p>
+<h2 id="边界网关协议bgp" class="headerLink">
+    <a href="#%e8%be%b9%e7%95%8c%e7%bd%91%e5%85%b3%e5%8d%8f%e8%ae%aebgp" class="header-mark"></a>边界网关协议BGP</h2><p>BGP（Border Gateway Protocol） 是<strong>不同自治系统的路由器之间</strong>交换路由信息的协议</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191438399.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191438399.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191438399.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191438399.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019191438399.jpg"
+        title="image-20201019191438399"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191718506.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191718506.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191718506.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191718506.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019191718506.jpg"
+        title="image-20201019191718506"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191836397.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191836397.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191836397.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019191836397.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019191836397.jpg"
+        title="image-20201019191836397"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192031087.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192031087.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192031087.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192031087.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019192031087.jpg"
+        title="image-20201019192031087"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192059962.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192059962.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192059962.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192059962.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019192059962.jpg"
+        title="image-20201019192059962"></p>
+<p><strong>总结</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192840368.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192840368.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192840368.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192840368.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019192840368.jpg"
+        title="image-20201019192840368"></p>
+<h2 id="直接封装ripospf和bgp报文的协议" class="headerLink">
+    <a href="#%e7%9b%b4%e6%8e%a5%e5%b0%81%e8%a3%85ripospf%e5%92%8cbgp%e6%8a%a5%e6%96%87%e7%9a%84%e5%8d%8f%e8%ae%ae" class="header-mark"></a>直接封装RIP、OSPF和BGP报文的协议</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192800829.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192800829.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192800829.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019192800829.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019192800829.jpg"
+        title="image-20201019192800829"></p>
+<hr>
+<h1 id="47ipv4数据报的首部格式" class="headerLink">
+    <a href="#47ipv4%e6%95%b0%e6%8d%ae%e6%8a%a5%e7%9a%84%e9%a6%96%e9%83%a8%e6%a0%bc%e5%bc%8f" class="header-mark"></a>4.7、IPv4数据报的首部格式</h1><h2 id="各字段的作用" class="headerLink">
+    <a href="#%e5%90%84%e5%ad%97%e6%ae%b5%e7%9a%84%e4%bd%9c%e7%94%a8" class="header-mark"></a>各字段的作用</h2><ul>
+<li>一个 IP 数据报由<strong>首部</strong>和<strong>数据</strong>两部分组成。</li>
+<li><strong>首部的前一部分是固定长度，共 20 字节，是所有 IP 数据报必须具有的。</strong></li>
+<li>在首部的固定部分的后面是一些可选字段，其长度是可变的。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019205931748.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019205931748.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019205931748.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019205931748.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019205931748.jpg"
+        title="image-20201019205931748"></p>
+<p>图中的每一行都由32个比特（也就是4个字节）构成，每个小格子称为字段或者域，每个字段或某些字段的组合用来表达IP协议的相关功能</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019211719880.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019211719880.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019211719880.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019211719880.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019211719880.jpg"
+        title="image-20201019211719880"></p>
+<blockquote>
+<p><strong>IP数据报的首部长度一定是4字节的整数倍</strong></p>
+<p>因为首部中的可选字段的长度从1个字节到40个字节不等，那么，当20字节的固定部分加上1到40个字节长度不等的可变部分，<strong>会造成首部长度不是4字节整数倍时，就用取值为全0的填充字段填充相应个字节</strong>，以确保IP数据报的首部长度是4字节的整数倍</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019212617006.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019212617006.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019212617006.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019212617006.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019212617006.jpg"
+        title="image-20201019212617006"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019220435415.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019220435415.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019220435415.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019220435415.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019220435415.jpg"
+        title="image-20201019220435415"></p>
+<p><strong>对IPv4数据报进行分片</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221021157.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221021157.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221021157.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221021157.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019221021157.jpg"
+        title="image-20201019221021157"></p>
+<p>​        现在假定分片2的IP数据报经过某个网络时还需要进行分片</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221246870.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221246870.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221246870.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019221246870.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019221246870.jpg"
+        title="image-20201019221246870"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222512112.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222512112.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222512112.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222512112.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019222512112.jpg"
+        title="image-20201019222512112"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222552444.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222552444.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222552444.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222552444.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019222552444.jpg"
+        title="image-20201019222552444"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222729797.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222729797.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222729797.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019222729797.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019222729797.jpg"
+        title="image-20201019222729797"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019223101434.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019223101434.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019223101434.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019223101434.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019223101434.jpg"
+        title="image-20201019223101434"></p>
+<h2 id="总结-5" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-5" class="header-mark"></a>总结</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019225141559.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019225141559.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019225141559.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019225141559.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019225141559.jpg"
+        title="image-20201019225141559"></p>
+<hr>
+<h1 id="48网际控制报文协议icmp" class="headerLink">
+    <a href="#48%e7%bd%91%e9%99%85%e6%8e%a7%e5%88%b6%e6%8a%a5%e6%96%87%e5%8d%8f%e8%ae%aeicmp" class="header-mark"></a>4.8、网际控制报文协议ICMP</h1><h2 id="概念-1" class="headerLink">
+    <a href="#%e6%a6%82%e5%bf%b5-1" class="header-mark"></a>概念</h2><p>架构IP网络时需要特别注意两点：</p>
+<ul>
+<li>确认网络是否正常工作</li>
+<li>遇到异常时进行问题诊断</li>
+</ul>
+<p><strong>而ICMP就是实现这些问题的协议</strong></p>
+<p>ICMP的主要功能包括：</p>
+<ul>
+<li>确认IP包是否成功送达目标地址</li>
+<li>通知在发送过程当中IP包被废弃的具体原因</li>
+<li>改善网络设置等</li>
+</ul>
+<p><strong>有了这些功能以后，就可以获得网络是否正常，设置是否有误以及设备有何异常等信息，从而便于进行网络上的问题诊断</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019232539898.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019232539898.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019232539898.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019232539898.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019232539898.jpg"
+        title="image-20201019232539898"></p>
+<p><strong>ICMP 不是高层协议（看起来好像是高层协议，因为 ICMP 报文是装在 IP 数据报中，作为其中的数据部分），而是 IP 层的协议</strong></p>
+<p>ICMP 报文的格式</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001035813.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001035813.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001035813.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001035813.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020001035813.jpg"
+        title="image-20201020001035813"></p>
+<h2 id="icmp差错报告报文" class="headerLink">
+    <a href="#icmp%e5%b7%ae%e9%94%99%e6%8a%a5%e5%91%8a%e6%8a%a5%e6%96%87" class="header-mark"></a>ICMP差错报告报文</h2><h3 id="终点不可达" class="headerLink">
+    <a href="#%e7%bb%88%e7%82%b9%e4%b8%8d%e5%8f%af%e8%be%be" class="header-mark"></a>终点不可达</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019230838587.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019230838587.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019230838587.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019230838587.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019230838587.jpg"
+        title="image-20201019230838587"></p>
+<h3 id="源点抑制" class="headerLink">
+    <a href="#%e6%ba%90%e7%82%b9%e6%8a%91%e5%88%b6" class="header-mark"></a>源点抑制</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231022291.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231022291.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231022291.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231022291.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019231022291.jpg"
+        title="image-20201019231022291"></p>
+<h3 id="时间超过" class="headerLink">
+    <a href="#%e6%97%b6%e9%97%b4%e8%b6%85%e8%bf%87" class="header-mark"></a>时间超过</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231230798.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231230798.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231230798.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231230798.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019231230798.jpg"
+        title="image-20201019231230798"></p>
+<h3 id="参数问题" class="headerLink">
+    <a href="#%e5%8f%82%e6%95%b0%e9%97%ae%e9%a2%98" class="header-mark"></a>参数问题</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231355471.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231355471.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231355471.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231355471.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019231355471.jpg"
+        title="image-20201019231355471"></p>
+<h3 id="改变路由重定向" class="headerLink">
+    <a href="#%e6%94%b9%e5%8f%98%e8%b7%af%e7%94%b1%e9%87%8d%e5%ae%9a%e5%90%91" class="header-mark"></a>改变路由（重定向）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231553990.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231553990.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231553990.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231553990.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019231553990.jpg"
+        title="image-20201019231553990"></p>
+<h3 id="不应发送icmp差错报告报文情况" class="headerLink">
+    <a href="#%e4%b8%8d%e5%ba%94%e5%8f%91%e9%80%81icmp%e5%b7%ae%e9%94%99%e6%8a%a5%e5%91%8a%e6%8a%a5%e6%96%87%e6%83%85%e5%86%b5" class="header-mark"></a>不应发送ICMP差错报告报文情况</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231733673.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231733673.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231733673.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019231733673.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019231733673.jpg"
+        title="image-20201019231733673"></p>
+<h2 id="icmp应用举例" class="headerLink">
+    <a href="#icmp%e5%ba%94%e7%94%a8%e4%b8%be%e4%be%8b" class="header-mark"></a>ICMP应用举例</h2><h3 id="分组网间探测pingpacket-internet-groper" class="headerLink">
+    <a href="#%e5%88%86%e7%bb%84%e7%bd%91%e9%97%b4%e6%8e%a2%e6%b5%8bpingpacket-internet-groper" class="header-mark"></a>分组网间探测PING（Packet InterNet Groper）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019233817921.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019233817921.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019233817921.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019233817921.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019233817921.jpg"
+        title="image-20201019233817921"></p>
+<h3 id="跟踪路由traceroute" class="headerLink">
+    <a href="#%e8%b7%9f%e8%b8%aa%e8%b7%af%e7%94%b1traceroute" class="header-mark"></a>跟踪路由（traceroute）</h3><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234123026.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234123026.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234123026.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234123026.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019234123026.jpg"
+        title="image-20201019234123026"></p>
+<p><strong>tracert命令的实现原理</strong></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234718107.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234718107.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234718107.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234718107.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019234718107.jpg"
+        title="image-20201019234718107"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234741268.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234741268.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234741268.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234741268.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019234741268.jpg"
+        title="image-20201019234741268"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234758693.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234758693.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234758693.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234758693.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019234758693.jpg"
+        title="image-20201019234758693"></p>
+<h2 id="总结-6" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-6" class="header-mark"></a>总结</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234909146.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234909146.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234909146.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019234909146.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019234909146.jpg"
+        title="image-20201019234909146"></p>
+<hr>
+<h1 id="49虚拟专用网vpn与网络地址转换nat" class="headerLink">
+    <a href="#49%e8%99%9a%e6%8b%9f%e4%b8%93%e7%94%a8%e7%bd%91vpn%e4%b8%8e%e7%bd%91%e7%bb%9c%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2nat" class="header-mark"></a>4.9、虚拟专用网VPN与网络地址转换NAT</h1><h2 id="虚拟专用网vpnvirtual-private-network" class="headerLink">
+    <a href="#%e8%99%9a%e6%8b%9f%e4%b8%93%e7%94%a8%e7%bd%91vpnvirtual-private-network" class="header-mark"></a>虚拟专用网VPN（Virtual Private Network）</h2><ul>
+<li>由于 <strong>IP 地址的紧缺</strong>，一个机构能够申请到的IP地址数往往远小于本机构所拥有的主机数。</li>
+<li>考虑到<strong>互联网并不很安全</strong>，一个机构内也并不需要把所有的主机接入到外部的互联网。</li>
+<li>假定在一个机构内部的计算机通信也是采用 TCP/IP 协议，那么从原则上讲，对于这些仅在<strong>机构内部使用</strong>的计算机就可以由本机构<strong>自行分配其 IP 地址</strong>。</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235534728.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235534728.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235534728.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235534728.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019235534728.jpg"
+        title="image-20201019235534728"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235631474.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235631474.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235631474.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235631474.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019235631474.jpg"
+        title="image-20201019235631474"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235718010.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235718010.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235718010.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201019235718010.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201019235718010.jpg"
+        title="image-20201019235718010"></p>
+<blockquote>
+<p>上图是因特网数字分配机构IANA官网查看IPv4地址空间中特殊地址的分配方案</p>
+<p>用粉红色标出来的地址就是无需申请的、可自由分配的专用地址，或称私有地址</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000136443.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000136443.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000136443.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000136443.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020000136443.jpg"
+        title="image-20201020000136443"></p>
+<blockquote>
+<p>私有地址只能用于一个机构的内部通信，而不能用于和因特网上的主机通信</p>
+<p>私有地址只能用作本地地址而不能用作全球地址</p>
+<p>因特网中所有路由器对目的地址是私有地址的IP数据报一律不进行转发</p>
+<p><strong>本地地址与全球地址</strong></p>
+<ul>
+<li><strong>本地地址</strong>——仅在机构内部使用的 IP 地址，可以由本机构自行分配，而不需要向互联网的管理机构申请。</li>
+<li><strong>全球地址</strong>——全球唯一的 IP 地址，必须向互联网的管理机构申请。</li>
+<li><strong>问题</strong>：在内部使用的本地地址就有可能和互联网中某个 IP 地址重合，这样就会出现地址的二义性问题。</li>
+</ul>
+</blockquote>
+<p>所以部门A和部门B至少需要一个 路由器具有合法的全球IP地址，这样各自的专用网才能利用公用的因特网进行通信</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000618797.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000618797.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000618797.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020000618797.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020000618797.jpg"
+        title="image-20201020000618797"></p>
+<p>部门A向部门B发送数据流程</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001107425.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001107425.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001107425.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001107425.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020001107425.jpg"
+        title="image-20201020001107425"></p>
+<blockquote>
+<p>两个专用网内的主机间发送的数据报是通过了公用的因特网，但在效果上就好像是在本机构的专用网上传送一样</p>
+<p>数据报在因特网中可能要经过多个网络和路由器，但从逻辑上看，R1和R2之间好像是一条直通的点对点链路</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001528569.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001528569.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001528569.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001528569.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020001528569.jpg"
+        title="image-20201020001528569"></p>
+<p>因此也被称为IP隧道技术</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001935801.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001935801.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001935801.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020001935801.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020001935801.jpg"
+        title="image-20201020001935801"></p>
+<h2 id="网络地址转换natnetwork-address-translation" class="headerLink">
+    <a href="#%e7%bd%91%e7%bb%9c%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2natnetwork-address-translation" class="header-mark"></a>网络地址转换NAT（Network Address Translation）</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002020607.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002020607.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002020607.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002020607.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020002020607.jpg"
+        title="image-20201020002020607"></p>
+<p>举例</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002439942.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002439942.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002439942.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002439942.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020002439942.jpg"
+        title="image-20201020002439942"></p>
+<blockquote>
+<p>使用私有地址的主机，如何才能与因特网上使用全球IP地址的主机进行通信？</p>
+<p>这需要在专用网络连接到因特网的路由器上安装NAT软件</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002734192.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002734192.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002734192.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020002734192.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020002734192.jpg"
+        title="image-20201020002734192"></p>
+<blockquote>
+<p>专有NAT软件的路由器叫做NAT路由器</p>
+<p>它至少有一个有效的外部全球IP地址</p>
+<p>这样，所有使用私有地址的主机在和外界通信时，都要在NAT路由器上将其私有地址转换为全球IP地址</p>
+</blockquote>
+<p>假设，使用私有地址的主机要给因特网上使用全球IP地址的另一台主机发送IP数据报</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003238729.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003238729.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003238729.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003238729.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020003238729.jpg"
+        title="image-20201020003238729"></p>
+<p>因特网上的这台主机给源主机发回数据报</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003411024.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003411024.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003411024.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003411024.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020003411024.jpg"
+        title="image-20201020003411024"></p>
+<p>当专用网中的这两台使用私有地址的主机都要给因特网使用全球地址的另一台主机发送数据报时，在NAT路由器的NAT转换表中就会产生两条记录，分别记录两个私有地址与全球地址的对应关系</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003658349.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003658349.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003658349.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003658349.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020003658349.jpg"
+        title="image-20201020003658349"></p>
+<p>这种基本转换存在一个问题</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003733863.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003733863.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003733863.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003733863.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020003733863.jpg"
+        title="image-20201020003733863"></p>
+<p>解决方法</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003840584.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003840584.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003840584.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020003840584.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020003840584.jpg"
+        title="image-20201020003840584"></p>
+<blockquote>
+<p>我们现在用的很多家用路由器都是这种NART路由器</p>
+</blockquote>
+<p>内网主机与外网主机的通信，是否能由外网主机首先发起？</p>
+<p>否定</p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004159360.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004159360.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004159360.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004159360.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020004159360.jpg"
+        title="image-20201020004159360"></p>
+<p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004312942.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004312942.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004312942.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004312942.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020004312942.jpg"
+        title="image-20201020004312942"></p>
+<h2 id="总结-7" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93-7" class="header-mark"></a>总结</h2><p><img
+        class="lazyload"
+        data-src="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004447021.jpg"
+        data-srcset="%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004447021.jpg, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004447021.jpg 1.5x, %e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e7%ac%ac4%e7%ab%a0%e7%bd%91%e7%bb%9c%e5%b1%82.assets/image-20201020004447021.jpg 2x"
+        data-sizes="auto"
+        alt="计算机网络第4章网络层.assets/image-20201020004447021.jpg"
+        title="image-20201020004447021"></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-03-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" data-title="计算机网络第4章（网络层）" data-hashtags="TCP/IP"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" data-hashtag="TCP/IP"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" data-title="计算机网络第4章（网络层）"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/" data-title="计算机网络第4章（网络层）"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/TCP/IP/">TCP/IP</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" class="prev" rel="prev" title="计算机网络第3章（数据链路层）"><i class="fas fa-angle-left fa-fw"></i>计算机网络第3章（数据链路层）</a>
+            <a href="/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" class="next" rel="next" title="计算机网络第5章（传输层）">计算机网络第5章（传输层）<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2017 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/wxzForest" target="_blank" rel="noopener noreferrer">Forest</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div><script>
+                    if('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .register('/sw.min.js', { scope: '/' })
+                            .then(function(registration) {
+                            });
+                
+                        navigator.serviceWorker
+                            .ready
+                            .then(function(registration) {
+                            });
+                    }
+                </script></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js"></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":20},"comment":{},"data":{"desktop-header-typeit":"Forest","mobile-header-typeit":"Forest"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":true,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.1,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true},"twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/lib/twemoji/twemoji.min.js" defer></script><script type="text/javascript" src="/js/twemoji.min.js" defer></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/typeit.min.js"></script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></div>
+</body>
+
+</html>

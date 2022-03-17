@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>大数据 - 分类 - Forest</title>
+        <link>https://wxzforest.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link>
+        <description>大数据 - 分类 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Sat, 21 Aug 2021 10:28:16 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="self" type="application/rss+xml" /><item>
+    <title>hbase_shell</title>
+    <link>https://wxzforest.github.io/blog/hbaseShell/</link>
+    <pubDate>Sat, 21 Aug 2021 10:28:16 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/hbaseShell/</guid>
+    <description><![CDATA[启动hbase shell，list查看表名 scan]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>nginx - 标签 - Forest</title>
+        <link>https://wxzforest.github.io/tags/nginx/</link>
+        <description>nginx - 标签 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Sat, 23 Mar 2019 16:18:07 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/tags/nginx/" rel="self" type="application/rss+xml" /><item>
+    <title>Docker安装nginx并配置wordpress反向代理</title>
+    <link>https://wxzforest.github.io/blog/Docker%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E9%85%8D%E7%BD%AEwordpress%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</link>
+    <pubDate>Sat, 23 Mar 2019 16:18:07 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/Docker%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E9%85%8D%E7%BD%AEwordpress%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</guid>
+    <description><![CDATA[一、下载nginx镜像并运行容器1 2 docker pull nginx docker run --name nginxtest -d -p 80:80 nginx 容器启动成功后，在阿里云防火墙控制台开启80端口，访问公网ip，可以跳转到“Wel]]></description>
+</item></channel>
+</rss>

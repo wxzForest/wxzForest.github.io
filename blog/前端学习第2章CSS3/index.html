@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">【前端学习笔记】CSS3 - Forest</title><meta name="Description" content="Forest的blog"><meta property="og:title" content="【前端学习笔记】CSS3" />
+<meta property="og:description" content="CSSCSS控制页面的表现。 层叠样式表。网页实际上是多层结构，通过CSS可以分别为网页的每层设置样式，最终我们只看到最上面一层。 使用方式 第一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/" /><meta property="og:image" content="https://wxzforest.github.io/images/yiquan.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-24T11:06:16+08:00" />
+<meta property="article:modified_time" content="2022-02-24T11:06:16+08:00" /><meta property="og:site_name" content="Forest" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wxzforest.github.io/images/yiquan.jpg"/>
+
+<meta name="twitter:title" content="【前端学习笔记】CSS3"/>
+<meta name="twitter:description" content="CSSCSS控制页面的表现。 层叠样式表。网页实际上是多层结构，通过CSS可以分别为网页的每层设置样式，最终我们只看到最上面一层。 使用方式 第一"/>
+<meta name="application-name" content="Forest">
+<meta name="apple-mobile-web-app-title" content="Forest">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/" /><link rel="prev" href="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC1%E7%AB%A0HTML5/" /><link rel="next" href="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC3%E7%AB%A0javascript/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "【前端学习笔记】CSS3",
+        "inLanguage": "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/wxzforest.github.io\/blog\/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3\/"
+        },"genre": "posts","wordcount":  5298 ,
+        "url": "https:\/\/wxzforest.github.io\/blog\/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3\/","datePublished": "2022-02-24T11:06:16+08:00","dateModified": "2022-02-24T11:06:16+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"authors": [{
+                    "@type": "Person",
+                    "name": "Forest"
+                }],"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="desktop-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/series/"> 系列 </a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="mobile-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/series/" title="">系列</a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#css">CSS</a>
+      <ul>
+        <li><a href="#使用方式">使用方式</a></li>
+        <li><a href="#css语法">CSS语法</a></li>
+        <li><a href="#选择器声明块w3schoolhttpswwww3schoolcomcncssrefcss_selectorsasp"><a href="https://www.w3school.com.cn/cssref/css_selectors.asp">选择器、声明块（w3school）</a>：</a>
+          <ul>
+            <li><a href="#选择器例子">选择器例子</a></li>
+            <li><a href="#样式的继承">样式的继承</a></li>
+            <li><a href="#选择器的权重">选择器的权重</a></li>
+          </ul>
+        </li>
+        <li><a href="#番外像素百分比emremrgbrgba">番外：像素、百分比、em、rem、RGB、RGBA</a></li>
+        <li><a href="#盒模型">盒模型</a>
+          <ul>
+            <li><a href="#文档流-normal-flow">文档流 normal flow</a></li>
+            <li><a href="#盒子模型box-model">盒子模型（box model）</a>
+              <ul>
+                <li><a href="#内容区content">内容区（content）</a></li>
+                <li><a href="#内边距padding">内边距（padding）</a></li>
+                <li><a href="#边框border">边框（border）</a></li>
+                <li><a href="#外边距margin">外边距（margin）</a></li>
+              </ul>
+            </li>
+            <li><a href="#水平方向布局">水平方向布局</a></li>
+            <li><a href="#垂直方向布局">垂直方向布局</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">【前端学习笔记】CSS3</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'><i class="author fas fa-user-circle fa-fw"></i><span class='screen-reader-text'>  </span><a href='https://wxzforest.github.io/authors/Forest'>Forest</a></span>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%89%8D%E7%AB%AF/"><i class="far fa-folder fa-fw"></i>前端</a></span>&nbsp;<span class="post-category">和</span>&nbsp;<span class="post-series">系列 <a href="/series/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-list-alt fa-fw"></i>前端学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-02-24">2022-02-24</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-02-24">2022-02-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5298 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 11 分钟&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>系列 - 前端学习笔记</span>
+                                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul>
+                                                    <li><a href="/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC1%E7%AB%A0HTML5/">【前端学习笔记】HTML5</a></li><li><span class="active">【前端学习笔记】CSS3</span></li>
+                                                    <li><a href="/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC3%E7%AB%A0javascript/">【前端学习笔记】JavaScript</a></li>
+                                                    <li><a href="/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC4%E7%AB%A0js%E9%AB%98%E7%BA%A7/">【前端学习笔记】JS高级</a></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#css">CSS</a>
+      <ul>
+        <li><a href="#使用方式">使用方式</a></li>
+        <li><a href="#css语法">CSS语法</a></li>
+        <li><a href="#选择器声明块w3schoolhttpswwww3schoolcomcncssrefcss_selectorsasp"><a href="https://www.w3school.com.cn/cssref/css_selectors.asp">选择器、声明块（w3school）</a>：</a>
+          <ul>
+            <li><a href="#选择器例子">选择器例子</a></li>
+            <li><a href="#样式的继承">样式的继承</a></li>
+            <li><a href="#选择器的权重">选择器的权重</a></li>
+          </ul>
+        </li>
+        <li><a href="#番外像素百分比emremrgbrgba">番外：像素、百分比、em、rem、RGB、RGBA</a></li>
+        <li><a href="#盒模型">盒模型</a>
+          <ul>
+            <li><a href="#文档流-normal-flow">文档流 normal flow</a></li>
+            <li><a href="#盒子模型box-model">盒子模型（box model）</a>
+              <ul>
+                <li><a href="#内容区content">内容区（content）</a></li>
+                <li><a href="#内边距padding">内边距（padding）</a></li>
+                <li><a href="#边框border">边框（border）</a></li>
+                <li><a href="#外边距margin">外边距（margin）</a></li>
+              </ul>
+            </li>
+            <li><a href="#水平方向布局">水平方向布局</a></li>
+            <li><a href="#垂直方向布局">垂直方向布局</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="css" class="headerLink">
+    <a href="#css" class="header-mark"></a>CSS</h1><p>CSS控制页面的表现。</p>
+<p>层叠样式表。网页实际上是多层结构，通过CSS可以分别为网页的每层设置样式，最终我们只看到最上面一层。</p>
+<h2 id="使用方式" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f" class="header-mark"></a>使用方式</h2><blockquote>
+<p>第一种 <strong>内联样式、行内样式</strong>：</p>
+<p>在标签内部通过style属性来设置。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;color: red; font-size: 30px;&#34;</span><span class="p">&gt;</span>红色<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>第二种 <strong>内部样式表</strong>：</p>
+<p>在head元素的style标签中编写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="nt">p</span><span class="p">{</span>
+	<span class="k">color</span><span class="p">:</span> <span class="kc">green</span><span class="p">;</span>
+	<span class="k">font-size</span><span class="p">:</span> <span class="mi">60</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>第三种 <strong>外部样式表</strong>：</p>
+<p>将css样式编写到一个外部css文件中，然后通过link标签来引入外部css文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;./style.css&#34;</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="css语法" class="headerLink">
+    <a href="#css%e8%af%ad%e6%b3%95" class="header-mark"></a>CSS语法</h2><blockquote>
+<p>注释：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">/* CSS的注释 */
+快捷键：ctrl + /
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="选择器声明块w3schoolhttpswwww3schoolcomcncssrefcss_selectorsasp" class="headerLink">
+    <a href="#%e9%80%89%e6%8b%a9%e5%99%a8%e5%a3%b0%e6%98%8e%e5%9d%97w3schoolhttpswwww3schoolcomcncssrefcss_selectorsasp" class="header-mark"></a><a href="https://www.w3school.com.cn/cssref/css_selectors.asp" target="_blank" rel="noopener noreffer">选择器、声明块（w3school）</a>：</h2><blockquote>
+<p>元素选择器：</p>
+<ul>
+<li>通过选择器可以选中页面中指定元素</li>
+<li>通过声明块来指定选择元素的样式</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="c">/* 
+</span><span class="c">用法：选择器{ 声明块 }
+</span><span class="c">例子：p{} h1{} div{} 
+</span><span class="c">*/</span>
+
+<span class="c">/* p元素样式 */</span>
+<span class="nt">p</span><span class="p">{</span><span class="k">color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span> <span class="k">font-size</span><span class="p">:</span> <span class="mi">30</span><span class="kt">px</span><span class="p">;}</span>
+
+<span class="c">/* h1元素样式 */</span>
+<span class="nt">h1</span><span class="p">{</span><span class="k">color</span><span class="p">:</span> <span class="kc">blue</span><span class="p">;}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>分组选择器：</p>
+<ul>
+<li>符合多个条件并集的选择器</li>
+<li>语法：选择器1,选择器2,选择器n{}</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">/* p元素或者h1元素字体颜色为绿色 */
+p,h1{color: green;}
+
+/* p元素或者h1元素字体颜色为绿色 */
+p.class1,h1.class2{color: green;}
+</code></pre></td></tr></table>
+</div>
+</div><p>id选择器：</p>
+<ul>
+<li>根据元素的id属性值选中一个元素，id不能重复</li>
+<li>在一个 HTML 文档中，ID 选择器会使用一次，而且仅一次</li>
+<li>ID 选择器不能结合使用，因为 ID 属性不允许有以空格分隔的词列表。</li>
+<li>ID 选择器可能是区分大小写的。这取决于文档的语言。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">#id{color: red;}
+</code></pre></td></tr></table>
+</div>
+</div><p>class 类选择器：</p>
+<ul>
+<li>
+<p>根据元素的class属性值选中一个元素，class可重复</p>
+</li>
+<li>
+<p>一个元素可以指定多个class</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">.class{color: red;}
+p.class{color: red;}
+p.class1.class2{color: red;}
+</code></pre></td></tr></table>
+</div>
+</div><p>通配选择器：</p>
+<ul>
+<li>选中页面所有元素</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">*{color: red;}
+</code></pre></td></tr></table>
+</div>
+</div><p>复合选择器：</p>
+<ul>
+<li>选中同时符合多个条件的元素</li>
+<li>语法：选择器1选择器2选择器n{}</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">/* div元素class=class1的字体颜色为红色 */
+div.class1{color: red;}
+
+/* p元素class=class1 class2的字体颜色为蓝色 */
+p.class1.class2{color: blue;}
+</code></pre></td></tr></table>
+</div>
+</div><p>关系选择器：</p>
+<ul>
+<li>
+<p>父元素</p>
+</li>
+<li>
+<p>子元素：选择子元素</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">语法：父元素 &gt; 子元素 &gt; 子元素n {}
+
+/* p中的span元素颜色为红色 */
+p &gt; span{color: red;}
+
+/* div中的p元素（包括p中的其他元素）颜色为橙色 */
+div &gt; p{color: orange;}
+
+/* div中的p元素中的span元素颜色为橙色 */
+div &gt; p &gt; span{color: orange;}
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>祖先元素</p>
+</li>
+<li>
+<p>后代元素：选择后代元素</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">语法：祖先元素 后代元素 {}
+
+/* div中及后代的span元素颜色为橙色 */
+div span{color: orange;}
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>兄弟元素：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">选择下一个兄弟元素
+语法：兄弟元素1 + 兄弟元素2 {}
+
+选择下边所有元素
+语法：兄弟元素1 ~ 兄弟元素2 {}
+</code></pre></td></tr></table>
+</div>
+</div><p>属性选择器：</p>
+<ul>
+<li>
+<p>[属性名] 选择有指定属性名的元素</p>
+</li>
+<li>
+<p>[属性名=属性值] 选择有指定属性名和属性值的元素</p>
+</li>
+<li>
+<p>[属性名~=属性值] 根据部分属性值选择</p>
+</li>
+<li>
+<p>[属性名^=属性值] 选择属性值以指定值开头的元素</p>
+</li>
+<li>
+<p>[属性名$=属性值] 选择属性值以指定值结尾的元素</p>
+</li>
+<li>
+<p>[属性名*=属性值] 选择属性值包含指定值的元素</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">p[title]{color: orange;}
+div[class=class1]{color: orange;}
+div[class=class1][title]{color: orange;}
+</code></pre></td></tr></table>
+</div>
+</div><p>伪类选择器：</p>
+<ul>
+<li>用来描述一个元素的特殊状态，如第一个子元素、被点击的元素、鼠标移入的元素</li>
+<li>一般情况下使用 : 开头</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">/* 如果li是ul的第一个子元素则字体红色 */
+ul &gt; li:first-child{ color: red; }
+/* 如果li是ul的最后一个子元素则字体红色 */
+ul &gt; li:last-child{ color: red; }
+/* 如果li是ul的第n个子元素 */
+ul &gt; li:nth-child(){ color: red; }
+
+/* 每种类型的第一个元素颜色为红色 */
+ul &gt; :first-of-type{color: red;}
+/* 除了每种类型的第一个元素，其他元素颜色为红色
+ul &gt; not(:first-of-type){color: red;}
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h3 id="选择器例子" class="headerLink">
+    <a href="#%e9%80%89%e6%8b%a9%e5%99%a8%e4%be%8b%e5%ad%90" class="header-mark"></a>选择器例子</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">选择器</th>
+<th style="text-align:left">例子</th>
+<th style="text-align:left">例子描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_class.asp" target="_blank" rel="noopener noreffer">.<em>class</em></a></td>
+<td style="text-align:left">.intro</td>
+<td style="text-align:left">选择 class=&ldquo;intro&rdquo; 的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">.<em>class1</em>.<em>class2</em></td>
+<td style="text-align:left">.name1.name2</td>
+<td style="text-align:left">选择 class 属性中同时有 name1 和 name2 的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">.<em>class1</em> .<em>class2</em></td>
+<td style="text-align:left">.name1 .name2</td>
+<td style="text-align:left">选择作为类名 name1 元素后代的所有类名 name2 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_id.asp" target="_blank" rel="noopener noreffer">#<em>id</em></a></td>
+<td style="text-align:left">#firstname</td>
+<td style="text-align:left">选择 id=&ldquo;firstname&rdquo; 的元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_all.asp" target="_blank" rel="noopener noreffer">*</a></td>
+<td style="text-align:left">*</td>
+<td style="text-align:left">选择所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element.asp" target="_blank" rel="noopener noreffer"><em>element</em></a></td>
+<td style="text-align:left">p</td>
+<td style="text-align:left">选择所有 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element_class.asp" target="_blank" rel="noopener noreffer"><em>element</em>.<em>class</em></a></td>
+<td style="text-align:left">p.intro</td>
+<td style="text-align:left">选择 class=&ldquo;intro&rdquo; 的所有 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element_comma.asp" target="_blank" rel="noopener noreffer"><em>element</em>,<em>element</em></a></td>
+<td style="text-align:left">div, p</td>
+<td style="text-align:left">选择所有 <div> 元素和所有 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element_element.asp" target="_blank" rel="noopener noreffer"><em>element</em> <em>element</em></a></td>
+<td style="text-align:left">div p</td>
+<td style="text-align:left">选择 <div> 元素内的所有 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element_gt.asp" target="_blank" rel="noopener noreffer"><em>element</em>&gt;<em>element</em></a></td>
+<td style="text-align:left">div &gt; p</td>
+<td style="text-align:left">选择父元素是 <div> 的所有 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_element_plus.asp" target="_blank" rel="noopener noreffer"><em>element</em>+<em>element</em></a></td>
+<td style="text-align:left">div + p</td>
+<td style="text-align:left">选择紧跟 <div> 元素的首个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_gen_sibling.asp" target="_blank" rel="noopener noreffer"><em>element1</em>~<em>element2</em></a></td>
+<td style="text-align:left">p ~ ul</td>
+<td style="text-align:left">选择前面有 <p> 元素的每个 <ul> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attribute.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>]</a></td>
+<td style="text-align:left">[target]</td>
+<td style="text-align:left">选择带有 target 属性的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attribute_value.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>=<em>value</em>]</a></td>
+<td style="text-align:left">[target=_blank]</td>
+<td style="text-align:left">选择带有 target=&quot;_blank&quot; 属性的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attribute_value_contain.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>~=<em>value</em>]</a></td>
+<td style="text-align:left">[title~=flower]</td>
+<td style="text-align:left">选择 title 属性包含单词 &ldquo;flower&rdquo; 的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attribute_value_start.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>|=<em>value</em>]</a></td>
+<td style="text-align:left">[lang|=en]</td>
+<td style="text-align:left">选择 lang 属性值以 &ldquo;en&rdquo; 开头的所有元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attr_begin.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>^=<em>value</em>]</a></td>
+<td style="text-align:left">a[href^=&ldquo;https&rdquo;]</td>
+<td style="text-align:left">选择其 src 属性值以 &ldquo;https&rdquo; 开头的每个 <a> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attr_end.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>$=<em>value</em>]</a></td>
+<td style="text-align:left">a[href$=&quot;.pdf&quot;]</td>
+<td style="text-align:left">选择其 src 属性以 &ldquo;.pdf&rdquo; 结尾的所有 <a> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left">[<a href="https://www.w3school.com.cn/cssref/selector_attr_contain.asp" target="_blank" rel="noopener noreffer"><em>attribute</em>*=<em>value</em>]</a></td>
+<td style="text-align:left">a[href*=&ldquo;w3schools&rdquo;]</td>
+<td style="text-align:left">选择其 href 属性值中包含 &ldquo;abc&rdquo; 子串的每个 <a> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_active.asp" target="_blank" rel="noopener noreffer">:active</a></td>
+<td style="text-align:left">a:active</td>
+<td style="text-align:left">选择活动链接。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_after.asp" target="_blank" rel="noopener noreffer">::after</a></td>
+<td style="text-align:left">p::after</td>
+<td style="text-align:left">在每个 <p> 的内容之后插入内容。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_before.asp" target="_blank" rel="noopener noreffer">::before</a></td>
+<td style="text-align:left">p::before</td>
+<td style="text-align:left">在每个 <p> 的内容之前插入内容。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_checked.asp" target="_blank" rel="noopener noreffer">:checked</a></td>
+<td style="text-align:left">input:checked</td>
+<td style="text-align:left">选择每个被选中的 <input> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_default.asp" target="_blank" rel="noopener noreffer">:default</a></td>
+<td style="text-align:left">input:default</td>
+<td style="text-align:left">选择默认的 <input> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_disabled.asp" target="_blank" rel="noopener noreffer">:disabled</a></td>
+<td style="text-align:left">input:disabled</td>
+<td style="text-align:left">选择每个被禁用的 <input> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_empty.asp" target="_blank" rel="noopener noreffer">:empty</a></td>
+<td style="text-align:left">p:empty</td>
+<td style="text-align:left">选择没有子元素的每个 <p> 元素（包括文本节点）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_enabled.asp" target="_blank" rel="noopener noreffer">:enabled</a></td>
+<td style="text-align:left">input:enabled</td>
+<td style="text-align:left">选择每个启用的 <input> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_first-child.asp" target="_blank" rel="noopener noreffer">:first-child</a></td>
+<td style="text-align:left">p:first-child</td>
+<td style="text-align:left">选择属于父元素的第一个子元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_first-letter.asp" target="_blank" rel="noopener noreffer">::first-letter</a></td>
+<td style="text-align:left">p::first-letter</td>
+<td style="text-align:left">选择每个 <p> 元素的首字母。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_first-line.asp" target="_blank" rel="noopener noreffer">::first-line</a></td>
+<td style="text-align:left">p::first-line</td>
+<td style="text-align:left">选择每个 <p> 元素的首行。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_first-of-type.asp" target="_blank" rel="noopener noreffer">:first-of-type</a></td>
+<td style="text-align:left">p:first-of-type</td>
+<td style="text-align:left">选择属于其父元素的首个 <p> 元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_focus.asp" target="_blank" rel="noopener noreffer">:focus</a></td>
+<td style="text-align:left">input:focus</td>
+<td style="text-align:left">选择获得焦点的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_fullscreen.asp" target="_blank" rel="noopener noreffer">:fullscreen</a></td>
+<td style="text-align:left">:fullscreen</td>
+<td style="text-align:left">选择处于全屏模式的元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_hover.asp" target="_blank" rel="noopener noreffer">:hover</a></td>
+<td style="text-align:left">a:hover</td>
+<td style="text-align:left">选择鼠标指针位于其上的链接。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_in-range.asp" target="_blank" rel="noopener noreffer">:in-range</a></td>
+<td style="text-align:left">input:in-range</td>
+<td style="text-align:left">选择其值在指定范围内的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_indeterminate.asp" target="_blank" rel="noopener noreffer">:indeterminate</a></td>
+<td style="text-align:left">input:indeterminate</td>
+<td style="text-align:left">选择处于不确定状态的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_invalid.asp" target="_blank" rel="noopener noreffer">:invalid</a></td>
+<td style="text-align:left">input:invalid</td>
+<td style="text-align:left">选择具有无效值的所有 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_lang.asp" target="_blank" rel="noopener noreffer">:lang(<em>language</em>)</a></td>
+<td style="text-align:left">p:lang(it)</td>
+<td style="text-align:left">选择 lang 属性等于 &ldquo;it&rdquo;（意大利）的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_last-child.asp" target="_blank" rel="noopener noreffer">:last-child</a></td>
+<td style="text-align:left">p:last-child</td>
+<td style="text-align:left">选择属于其父元素最后一个子元素每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_last-of-type.asp" target="_blank" rel="noopener noreffer">:last-of-type</a></td>
+<td style="text-align:left">p:last-of-type</td>
+<td style="text-align:left">选择属于其父元素的最后 <p> 元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_link.asp" target="_blank" rel="noopener noreffer">:link</a></td>
+<td style="text-align:left">a:link</td>
+<td style="text-align:left">选择所有未访问过的链接。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_not.asp" target="_blank" rel="noopener noreffer">:not(<em>selector</em>)</a></td>
+<td style="text-align:left">:not(p)</td>
+<td style="text-align:left">选择非 <p> 元素的每个元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_nth-child.asp" target="_blank" rel="noopener noreffer">:nth-child(<em>n</em>)</a></td>
+<td style="text-align:left">p:nth-child(2)</td>
+<td style="text-align:left">选择属于其父元素的第二个子元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_nth-last-child.asp" target="_blank" rel="noopener noreffer">:nth-last-child(<em>n</em>)</a></td>
+<td style="text-align:left">p:nth-last-child(2)</td>
+<td style="text-align:left">同上，从最后一个子元素开始计数。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_nth-of-type.asp" target="_blank" rel="noopener noreffer">:nth-of-type(<em>n</em>)</a></td>
+<td style="text-align:left">p:nth-of-type(2)</td>
+<td style="text-align:left">选择属于其父元素第二个 <p> 元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_nth-last-of-type.asp" target="_blank" rel="noopener noreffer">:nth-last-of-type(<em>n</em>)</a></td>
+<td style="text-align:left">p:nth-last-of-type(2)</td>
+<td style="text-align:left">同上，但是从最后一个子元素开始计数。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_only-of-type.asp" target="_blank" rel="noopener noreffer">:only-of-type</a></td>
+<td style="text-align:left">p:only-of-type</td>
+<td style="text-align:left">选择属于其父元素唯一的 <p> 元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_only-child.asp" target="_blank" rel="noopener noreffer">:only-child</a></td>
+<td style="text-align:left">p:only-child</td>
+<td style="text-align:left">选择属于其父元素的唯一子元素的每个 <p> 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_optional.asp" target="_blank" rel="noopener noreffer">:optional</a></td>
+<td style="text-align:left">input:optional</td>
+<td style="text-align:left">选择不带 &ldquo;required&rdquo; 属性的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_out-of-range.asp" target="_blank" rel="noopener noreffer">:out-of-range</a></td>
+<td style="text-align:left">input:out-of-range</td>
+<td style="text-align:left">选择值超出指定范围的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_placeholder.asp" target="_blank" rel="noopener noreffer">::placeholder</a></td>
+<td style="text-align:left">input::placeholder</td>
+<td style="text-align:left">选择已规定 &ldquo;placeholder&rdquo; 属性的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_read-only.asp" target="_blank" rel="noopener noreffer">:read-only</a></td>
+<td style="text-align:left">input:read-only</td>
+<td style="text-align:left">选择已规定 &ldquo;readonly&rdquo; 属性的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_read-write.asp" target="_blank" rel="noopener noreffer">:read-write</a></td>
+<td style="text-align:left">input:read-write</td>
+<td style="text-align:left">选择未规定 &ldquo;readonly&rdquo; 属性的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_required.asp" target="_blank" rel="noopener noreffer">:required</a></td>
+<td style="text-align:left">input:required</td>
+<td style="text-align:left">选择已规定 &ldquo;required&rdquo; 属性的 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_root.asp" target="_blank" rel="noopener noreffer">:root</a></td>
+<td style="text-align:left">:root</td>
+<td style="text-align:left">选择文档的根元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_selection.asp" target="_blank" rel="noopener noreffer">::selection</a></td>
+<td style="text-align:left">::selection</td>
+<td style="text-align:left">选择用户已选取的元素部分。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_target.asp" target="_blank" rel="noopener noreffer">:target</a></td>
+<td style="text-align:left">#news:target</td>
+<td style="text-align:left">选择当前活动的 #news 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_valid.asp" target="_blank" rel="noopener noreffer">:valid</a></td>
+<td style="text-align:left">input:valid</td>
+<td style="text-align:left">选择带有有效值的所有 input 元素。</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.w3school.com.cn/cssref/selector_visited.asp" target="_blank" rel="noopener noreffer">:visited</a></td>
+<td style="text-align:left">a:visited</td>
+<td style="text-align:left">选择所有已访问的链接。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="样式的继承" class="headerLink">
+    <a href="#%e6%a0%b7%e5%bc%8f%e7%9a%84%e7%bb%a7%e6%89%bf" class="header-mark"></a>样式的继承</h3><ul>
+<li>我们为一个元素设置的样式同时也会应用到它的后代元素上。</li>
+<li>并不是所有样式都会被继承，比如背景、布局相关不会被继承。</li>
+</ul>
+<h3 id="选择器的权重" class="headerLink">
+    <a href="#%e9%80%89%e6%8b%a9%e5%99%a8%e7%9a%84%e6%9d%83%e9%87%8d" class="header-mark"></a>选择器的权重</h3><ul>
+<li>样式冲突：当通过不同的元素选中相同的元素，并为其属性设置不同的值，此时发生样式冲突，样式展示由选择器权重决定。</li>
+<li>权重（优先级）：
+<ul>
+<li>内联样式					1,0,0,0</li>
+<li>id选择器    			     0,1,0,0</li>
+<li>类和伪类选择器         0,0,1,0</li>
+<li>元素选择器                0,0,0,1</li>
+<li>通配选择器                0,0,0,0</li>
+<li>继承的样式                无权重</li>
+<li>!important                获取最高权重</li>
+</ul>
+</li>
+<li>比较权重：
+<ul>
+<li>需要将所有的选择器的权重相加计算，最后优先级越高则越优先显示（分组选择器是单独计算的）</li>
+<li>选择器权重累加不会超过前一档，比如类选择器再怎么加也不会超过id选择器</li>
+<li>如果权重计算相等，则代码从上往下使用下面的样式。</li>
+<li>若在某个样式后面添加&quot;!important&quot;，则此时样式会获取到最高优先级，超过内联样式。（不要用）</li>
+</ul>
+</li>
+</ul>
+<h2 id="番外像素百分比emremrgbrgba" class="headerLink">
+    <a href="#%e7%95%aa%e5%a4%96%e5%83%8f%e7%b4%a0%e7%99%be%e5%88%86%e6%af%94emremrgbrgba" class="header-mark"></a>番外：像素、百分比、em、rem、RGB、RGBA</h2><p>像素：显示器由一个个像素构成，不同屏幕像素大小不同。</p>
+<blockquote>
+<p>分辨率 = 水平方向像素 * 垂直方向像素</p>
+</blockquote>
+<p>百分比：也可以将属性值设置为相对于其父元素属性的百分比，可以使子元素跟随父元素（暂且先理解成父元素，后面会详细说）的改变而改变。</p>
+<p>em：相对于元素的字体大小来计算的，<code>1em = &lt;self&gt;.font-size * 10</code>，也就说em值会根据元素本身的字体大小的改变而改变。</p>
+<p>rem：相对于根元素的字体大小来计算，<code>1em = &lt;root&gt;.font-size * 10</code>，rem值根据html的字体大小改变。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="o">*</span> <span class="p">{</span>
+        <span class="k">font-size</span><span class="p">:</span> <span class="mi">24</span><span class="kt">px</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="p">.</span><span class="nc">box1</span><span class="p">{</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">200</span><span class="kt">px</span><span class="p">;</span> 
+        <span class="k">height</span><span class="p">:</span> <span class="mi">200</span><span class="kt">px</span><span class="p">;</span>
+        <span class="k">background-color</span><span class="p">:</span> <span class="kc">orange</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="p">.</span><span class="nc">box2</span><span class="p">{</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span> 
+        <span class="k">height</span><span class="p">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span> 
+        <span class="k">background-color</span><span class="p">:</span> <span class="kc">aqua</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="p">.</span><span class="nc">box3</span><span class="p">{</span>
+        <span class="k">font-size</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">10</span><span class="kt">em</span><span class="p">;</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">10</span><span class="kt">em</span><span class="p">;</span>
+        <span class="k">background-color</span><span class="p">:</span> <span class="kc">greenyellow</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="p">.</span><span class="nc">box4</span> <span class="p">{</span>
+        <span class="k">font-size</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">10</span><span class="kt">rem</span><span class="p">;</span> <span class="c">/*当时用rem时，不管怎么改本元素的font-size都是不会变的。需要定义root元素的font-size才可以 */</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">10</span><span class="kt">rem</span><span class="p">;</span>
+        <span class="k">background-color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box1&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box2&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box3&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box4&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>RGB值：通过三种颜色不同浓度来调配不同的颜色。</p>
+<blockquote>
+<p>R-red，G-green，B-blue
+每种颜色范围在“0~255”之间或“0%~100%”。
+语法：rgb(255,0,0)</p>
+</blockquote>
+<p>RGBA：A表示不透明度</p>
+<blockquote>
+<p>1表示完全不透明
+0表示完全透明
+.5半透明</p>
+</blockquote>
+<p>十六进制RGB值：</p>
+<blockquote>
+<p>语法：#红色绿色蓝色</p>
+<p>颜色浓度通过 00-ff 表示</p>
+<p>如果颜色两位两位重复可以进行简写，如<code>#aabbcc</code> =&gt; <code>#abc</code></p>
+</blockquote>
+<h2 id="盒模型" class="headerLink">
+    <a href="#%e7%9b%92%e6%a8%a1%e5%9e%8b" class="header-mark"></a>盒模型</h2><h3 id="文档流-normal-flow" class="headerLink">
+    <a href="#%e6%96%87%e6%a1%a3%e6%b5%81-normal-flow" class="header-mark"></a>文档流 normal flow</h3><ul>
+<li>
+<p>网页是一个多层的结构，通过CSS可以分别为每一层来设置样式，作为用户来讲只能看到最顶上一层，这些层中<em><strong>最底下的一层称为文档流</strong></em>。</p>
+</li>
+<li>
+<p>文档流是网页的基础，我们所创建的元素默认都是在文档流中进行排列。元素主要有两个状态：</p>
+<ul>
+<li>在文档流中</li>
+</ul>
+<ul>
+<li>不在文档流中（脱离文档流）</li>
+</ul>
+</li>
+<li>
+<p><strong>元素在文档流中的特点：</strong></p>
+<ul>
+<li>块元素：
+<ul>
+<li>块元素会在页面中独占一行</li>
+<li>默认宽度是父元素全部（把父元素撑满）</li>
+<li>默认高度被子元素撑开</li>
+</ul>
+</li>
+<li>行内元素：
+<ul>
+<li>行内元素不会独占一行，只占自身大小</li>
+<li>自左向右水平排列，如果一行中不能容纳下所有行内元素泽远溯洄换到第二行继续自左向右排列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="盒子模型box-model" class="headerLink">
+    <a href="#%e7%9b%92%e5%ad%90%e6%a8%a1%e5%9e%8bbox-model" class="header-mark"></a>盒子模型（box model）</h3><blockquote>
+<p>网页设计中常听的属性名：内容(content)、内边距(padding)、边框(border)、外边距(margin)， CSS盒子模型都具备这些属性。
+这些属性我们可以用日常生活中的常见事物——盒子作一个比喻来理解，所以叫它盒子模型。
+CSS盒子模型就是在网页设计中经常用到的CSS技术所使用的一种思维模型。</p>
+</blockquote>
+<blockquote>
+<p>CSS将页面中的所有元素都设置为了一个矩形的盒子。</p>
+<p>盒子可见框的大小，由内容区、内边距和边框共同决定，所以在计算盒子大小时，需要将这三个区域加到一起计算</p>
+</blockquote>
+<p>每一个盒子都由一下几个部分组成：</p>
+<h4 id="内容区content" class="headerLink">
+    <a href="#%e5%86%85%e5%ae%b9%e5%8c%bacontent" class="header-mark"></a>内容区（content）</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html">width、height、background-color
+color:前景色
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="内边距padding" class="headerLink">
+    <a href="#%e5%86%85%e8%be%b9%e8%b7%9dpadding" class="header-mark"></a>内边距（padding）</h4><p>内边距，也叫填充，是内容区和边框之间的空间</p>
+<ul>
+<li>
+<p><code>padding-top</code> 上内边距</p>
+</li>
+<li>
+<p><code>padding-right</code> 右内边距</p>
+</li>
+<li>
+<p><code>padding-bottom</code>下内边距</p>
+</li>
+<li>
+<p><code>padding-left</code> 左内边距</p>
+</li>
+</ul>
+<p>padding内边距的简写属性，可以同时指定四个方向的内边距，规则和边框中属性值设置一样</p>
+<h4 id="边框border" class="headerLink">
+    <a href="#%e8%be%b9%e6%a1%86border" class="header-mark"></a>边框（border）</h4><p>边框属于盒子边缘，边框里边属于盒子内部，出了边框都是盒子的外部</p>
+<ul>
+<li>border-width 边框的宽度：默认3px
+<ul>
+<li>border-top-width 上边框的宽度</li>
+<li>border-right-width 右边框的宽度</li>
+<li>border-bottom-width 下边框的宽度</li>
+<li>border-left-width 左边框的宽度</li>
+</ul>
+</li>
+<li>border-color 边框的颜色：默认使用color的颜色值
+<ul>
+<li>border-top-color 上边框的颜色</li>
+<li>border-right-color 右边框的颜色</li>
+<li>border-bottom-color 下边框的颜色</li>
+<li>border-left-color 左边框的颜色</li>
+</ul>
+</li>
+<li>border-style 边框的样式：没有默认值，必须指定
+<ul>
+<li>border-top-style 上边框的样式</li>
+<li>border-right-style 右边框的样式</li>
+<li>border-bottom-style 下边框的样式</li>
+<li>border-left-style 左边框的样式</li>
+</ul>
+</li>
+</ul>
+<p>设定几个值就决定了对应方向的宽度、颜色或样式</p>
+<ul>
+<li>四个值：上 右 下 左</li>
+<li>三个值：上 左右 下</li>
+<li>两个值：上下 左右</li>
+<li>一个值：上下左右</li>
+</ul>
+<p>其实不管设置几个值，只要记住：<strong>其顺序是按顺时针方向设置的，剩下的可以由矩形的对称性推导出来</strong></p>
+<p>效果（solid）</p>
+<p><img
+        class="lazyload"
+        data-src="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/babf3e1494194a72.png"
+        data-srcset="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/babf3e1494194a72.png, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/babf3e1494194a72.png 1.5x, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/babf3e1494194a72.png 2x"
+        data-sizes="auto"
+        alt="前端学习第2章CSS3.assets/babf3e1494194a72.png"
+        title="img"></p>
+<p>效果（dotted）</p>
+<p><img
+        class="lazyload"
+        data-src="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/8e25174ec14870ae1.png"
+        data-srcset="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/8e25174ec14870ae1.png, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/8e25174ec14870ae1.png 1.5x, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/8e25174ec14870ae1.png 2x"
+        data-sizes="auto"
+        alt="前端学习第2章CSS3.assets/8e25174ec14870ae1.png"
+        title="img"></p>
+<p>效果（dashed）</p>
+<p><img
+        class="lazyload"
+        data-src="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/e70ac2e20d322b2.png"
+        data-srcset="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/e70ac2e20d322b2.png, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/e70ac2e20d322b2.png 1.5x, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/e70ac2e20d322b2.png 2x"
+        data-sizes="auto"
+        alt="前端学习第2章CSS3.assets/e70ac2e20d322b2.png"
+        title="img"></p>
+<p>效果（double）</p>
+<p><img
+        class="lazyload"
+        data-src="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/5de7253295737.png"
+        data-srcset="%e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/5de7253295737.png, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/5de7253295737.png 1.5x, %e5%89%8d%e7%ab%af%e5%ad%a6%e4%b9%a0%e7%ac%ac2%e7%ab%a0CSS3.assets/5de7253295737.png 2x"
+        data-sizes="auto"
+        alt="前端学习第2章CSS3.assets/5de7253295737.png"
+        title="img"></p>
+<h4 id="外边距margin" class="headerLink">
+    <a href="#%e5%a4%96%e8%be%b9%e8%b7%9dmargin" class="header-mark"></a>外边距（margin）</h4><p>外边距，也叫空白边，位于盒子的最外围，是添加在边框外周围的空间。空白边使盒子之间不会紧凑地连接在一起，是CSS 布局的一个重要手段</p>
+<blockquote>
+<p>注意：外边距不会影响盒子可见框的大小，但是外边距会影响盒子的位置和占用空间</p>
+</blockquote>
+<p>一共有四个方向的外边距：</p>
+<ul>
+<li>
+<p><code>margin-top</code> 上外边距</p>
+</li>
+<li>
+<ul>
+<li>设置正值，元素自身向下移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>设置负值，元素自身向上移动</li>
+</ul>
+</li>
+<li>
+<p><code>margin-right</code> 右外边距</p>
+</li>
+<li>
+<ul>
+<li>设置正值，其右边的元素向右移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>设置负值，其右边的元素向左移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>上述说法并不准确，对于块元素，设置<code>margin-right</code>不会产生任何效果</li>
+</ul>
+</li>
+<li>
+<p><code>margin-bottom</code> 下外边距</p>
+</li>
+<li>
+<ul>
+<li>设置正值，其下边的元素向下移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>设置负值，其下边的元素向上移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>上述说法并不准确，对于块元素，会有垂直方向上的边距重叠问题（后面会细说）</li>
+</ul>
+</li>
+<li>
+<p><code>margin-left</code> 左外边距</p>
+</li>
+<li>
+<ul>
+<li>设置正值，元素自身向右移动</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>设置负值，元素自身向左移动</li>
+</ul>
+</li>
+</ul>
+<p>元素在页面中是按照自左向右的顺序排列的，所以默认情况下</p>
+<ul>
+<li>
+<p><strong>如果我们设置的左和上外边距则会移动元素自身</strong></p>
+</li>
+<li>
+<p><strong>而设置下和右外边距会移动其他元素</strong></p>
+</li>
+</ul>
+<h3 id="水平方向布局" class="headerLink">
+    <a href="#%e6%b0%b4%e5%b9%b3%e6%96%b9%e5%90%91%e5%b8%83%e5%b1%80" class="header-mark"></a>水平方向布局</h3><p>元素在其父元素中水平方向的位置由以下几个属性共同决定</p>
+<ul>
+<li>
+<p><code>margin-left</code></p>
+</li>
+<li>
+<p><code>border-left</code></p>
+</li>
+<li>
+<p><code>padding-left</code></p>
+</li>
+<li>
+<p><code>width</code></p>
+</li>
+<li>
+<p><code>padding-right</code></p>
+</li>
+<li>
+<p><code>border-right</code></p>
+</li>
+<li>
+<p><code>margin-right</code></p>
+</li>
+</ul>
+<p>一个元素在其父元素中，水平布局必须要满足以下的等式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">margin-left + border-left + padding-left + width + padding-right + border-right + margin-right = 其父元素的宽度
+</code></pre></td></tr></table>
+</div>
+</div><p>以上等式必须满足，如果相加结果使等式不成立，则称为过渡约束.</p>
+<p>则等式会自动调整调整的情况：</p>
+<ul>
+<li>
+<p>如果这七个值中没有<code>auto</code>的情况，则浏览器会自动调整<code>margin-right</code>值以使等式满足
+<code>100 + 0 + 0 + 200 + 0 + 0 + 0 = 800</code> ==&gt; <code>100 + 0 + 0 + 200 + 0 + 0 + 500 = 800</code></p>
+</li>
+<li>
+<p>如果这七个值中有<code>auto</code>的情况，则会自动调整<code>auto</code>值以使等式成立
+这七个值中有三个值可以设置为<code>auto</code> ：<code>width</code>、<code>margin-left</code>、<code>maring-right</code></p>
+</li>
+</ul>
+<ol>
+<li>
+<ol>
+<li>如果某个值为auto，则会自动调整<code>auto</code>的那个值以使等式成立
+<code>200 + 0 + 0 + auto + 0 + 0 + 200 = 600</code> ==&gt; <code>200 + 0 + 0 + 400 + 0 + 0 + 200 = 800</code>
+<code>auto + 0 + 0 + 200 + 0 + 0 + 200 = 600</code> ==&gt; <code>400 + 0 + 0 + 200 + 0 + 0 + 200 = 800</code>
+<code>200 + 0 + 0 + 200 + 0 + 0 + auto = 600</code> ==&gt; <code>200 + 0 + 0 + 200 + 0 + 0 + 400 = 800</code></li>
+<li>如果宽度为<code>auto</code>，则宽度会调整到最大，其他<code>auto</code>的外边距会自动设置为0
+<code>auto + 0 + 0 + auto + 0 + 0 + 200 = 600</code> ==&gt; <code>0 + 0 + 0 + 600 + 0 + 0 + 200 = 800</code>
+<code>200 + 0 + 0 + auto + 0 + 0 + auto = 600</code> ==&gt; <code>200 + 0 + 0 + 600 + 0 + 0 + 0 = 800</code>
+<code>auto + 0 + 0 + auto + 0 + 0 + auto = 600</code> ==&gt; <code>0 + 0 + 0 + 800 + 0 + 0 + 0 = 800</code></li>
+</ol>
+</li>
+<li>
+<ol>
+<li>如果外边距都为<code>auto</code>，则<code>auto</code>的外边距会自动均分以使等式成立
+<code>auto + 0 + 0 + 200 + 0 + 0 + auto = 600</code> ==&gt; <code>300 + 0 + 0 + 200 + 0 + 0 + 300 = 800</code></li>
+</ol>
+</li>
+</ol>
+<h3 id="垂直方向布局" class="headerLink">
+    <a href="#%e5%9e%82%e7%9b%b4%e6%96%b9%e5%90%91%e5%b8%83%e5%b1%80" class="header-mark"></a>垂直方向布局</h3><p>子元素是在父元素的内容区中排列的，如果子元素的大小超过了父元素，则子元素会从父元素中溢出</p>
+<p>使用<code>overflow</code>/<code>overflow-x</code>/<code>overflow-y</code>属性来设置父元素如何处理溢出的子元素</p>
+<p>可选值：<code>visible</code>/<code>hidden</code>/<code>scroll</code>/<code>auto</code></p>
+<p><code>visible</code> 溢出内容会在父元素外部位置显示，默认值</p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-02-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/" data-title="【前端学习笔记】CSS3"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/" data-title="【前端学习笔记】CSS3"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/" data-title="【前端学习笔记】CSS3"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC1%E7%AB%A0HTML5/" class="prev" rel="prev" title="【前端学习笔记】HTML5"><i class="fas fa-angle-left fa-fw"></i>【前端学习笔记】HTML5</a>
+            <a href="/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC3%E7%AB%A0javascript/" class="next" rel="next" title="【前端学习笔记】JavaScript">【前端学习笔记】JavaScript<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2017 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/wxzForest" target="_blank" rel="noopener noreferrer">Forest</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div><script>
+                    if('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .register('/sw.min.js', { scope: '/' })
+                            .then(function(registration) {
+                            });
+                
+                        navigator.serviceWorker
+                            .ready
+                            .then(function(registration) {
+                            });
+                    }
+                </script></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js"></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":20},"comment":{},"data":{"desktop-header-typeit":"Forest","mobile-header-typeit":"Forest"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":true,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.1,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true},"twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/lib/twemoji/twemoji.min.js" defer></script><script type="text/javascript" src="/js/twemoji.min.js" defer></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/typeit.min.js"></script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></div>
+</body>
+
+</html>

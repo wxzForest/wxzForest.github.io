@@ -1,0 +1,32 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>前端学习笔记 - 系列 - Forest</title>
+        <link>https://wxzforest.github.io/series/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <description>前端学习笔记 - 系列 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Thu, 24 Feb 2022 11:06:40 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/series/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+    <title>【前端学习笔记】JS高级</title>
+    <link>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC4%E7%AB%A0js%E9%AB%98%E7%BA%A7/</link>
+    <pubDate>Thu, 24 Feb 2022 11:06:40 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC4%E7%AB%A0js%E9%AB%98%E7%BA%A7/</guid>
+    <description><![CDATA[一、javaScript基础总结1、数据类型相关知识点Ⅰ-基本(值)类型 String: 任意字符串 Number: 任意的数字 boolean: true/false undefined: undefined null: null &ndash;&gt;使用typ]]></description>
+</item><item>
+    <title>【前端学习笔记】JavaScript</title>
+    <link>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC3%E7%AB%A0javascript/</link>
+    <pubDate>Thu, 24 Feb 2022 11:06:27 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC3%E7%AB%A0javascript/</guid>
+    <description><![CDATA[JS的组成JavaScript负责页面中的的行为。 它是一门运行在浏览器端的脚本语言。 JavaScript由三部分组成： ECMAScript：]]></description>
+</item><item>
+    <title>【前端学习笔记】CSS3</title>
+    <link>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/</link>
+    <pubDate>Thu, 24 Feb 2022 11:06:16 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC2%E7%AB%A0CSS3/</guid>
+    <description><![CDATA[CSSCSS控制页面的表现。 层叠样式表。网页实际上是多层结构，通过CSS可以分别为网页的每层设置样式，最终我们只看到最上面一层。 使用方式 第一]]></description>
+</item><item>
+    <title>【前端学习笔记】HTML5</title>
+    <link>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC1%E7%AB%A0HTML5/</link>
+    <pubDate>Thu, 24 Feb 2022 11:06:00 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%AC1%E7%AB%A0HTML5/</guid>
+    <description><![CDATA[网页构成html的三个组成部分： 结构：HTML 表现：CSS 行为：JavaScript HTML超文本标记语言（超文本指的是超链接） 标记语言是一]]></description>
+</item></channel>
+</rss>

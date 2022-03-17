@@ -1,0 +1,38 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>performance - 分类 - Forest</title>
+        <link>https://wxzforest.github.io/categories/performance/</link>
+        <description>performance - 分类 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Thu, 17 Feb 2022 19:37:46 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/categories/performance/" rel="self" type="application/rss+xml" /><item>
+    <title>[转]ab、wrk、JMeter、Locust这些压测工具的并发模型差别</title>
+    <link>https://wxzforest.github.io/blog/%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7%E7%9A%84%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B%E5%B7%AE%E5%88%AB/</link>
+    <pubDate>Thu, 17 Feb 2022 19:37:46 &#43;0800</pubDate><author>
+                    <name></name><uri>https://wxzforest.github.io/authors/</uri></author><guid>https://wxzforest.github.io/blog/%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7%E7%9A%84%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B%E5%B7%AE%E5%88%AB/</guid>
+    <description><![CDATA[选择压测工具是在选什么？压力测试是测试工程师日常工作中一项比较“有技术含量”的工作，很多人都对这项工作充满了好奇。除了少数特殊场景得靠是自己]]></description>
+</item><item>
+    <title>[转]MQTT压测</title>
+    <link>https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/</link>
+    <pubDate>Sun, 09 Jan 2022 17:40:41 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/</guid>
+    <description><![CDATA[背景因为某天晚上的直播课,在开始直播间刚进入教室的时候,某些Android低端机会ANR. 经过排查是客户端收到了大量的进入教室和退出教室信令]]></description>
+</item><item>
+    <title>[慢SQL分析]数据量过大导致优化器使用错误索引</title>
+    <link>https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/</link>
+    <pubDate>Thu, 16 Sep 2021 13:07:26 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/</guid>
+    <description><![CDATA[数据量过大导致优化器使用错误索引1、线上告警：CPU接近跑满，突破“严重”级别阈值 2、问题SQL：抓取今早 08:16 分慢查询如下 1 2 3 4 5 6 7 select*fromorder_park_orderwhereplate_no=&#39;&#39;andtype=2andstatusin(0,1,2,3,4,99)orderbystart_datedesclimit1; 扫描]]></description>
+</item><item>
+    <title>记一次全链路性能测试</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%85%A8%E9%93%BE%E8%B7%AF%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/</link>
+    <pubDate>Thu, 08 Apr 2021 10:41:46 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%85%A8%E9%93%BE%E8%B7%AF%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/</guid>
+    <description><![CDATA[一、背景介绍二、准备工作三、用Jmeter开始整活3.1 数据准备数据准备部分1、调用创建运营主体接口，对运营主体名称打标“test压力测试$]]></description>
+</item><item>
+    <title>[转]Linux性能分析工具汇总合集</title>
+    <link>https://wxzforest.github.io/blog/Linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB%E5%90%88%E9%9B%86/</link>
+    <pubDate>Mon, 29 Mar 2021 16:49:11 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/Linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB%E5%90%88%E9%9B%86/</guid>
+    <description><![CDATA[出于对Linux操作系统的兴趣，以及对底层知识的强烈欲望，因此整理了这篇文章。本文也可以作为检验基础知识的指标，另外文章涵盖了一个系统的方方]]></description>
+</item></channel>
+</rss>

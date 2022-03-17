@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">[慢SQL分析]数据量过大导致优化器使用错误索引 - Forest</title><meta name="Description" content="Forest的blog"><meta property="og:title" content="[慢SQL分析]数据量过大导致优化器使用错误索引" />
+<meta property="og:description" content="数据量过大导致优化器使用错误索引1、线上告警：CPU接近跑满，突破“严重”级别阈值 2、问题SQL：抓取今早 08:16 分慢查询如下 1 2 3 4 5 6 7 select*fromorder_park_orderwhereplate_no=&#39;&#39;andtype=2andstatusin(0,1,2,3,4,99)orderbystart_datedesclimit1; 扫描" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" /><meta property="og:image" content="https://wxzforest.github.io/images/yiquan.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-09-16T13:07:26+08:00" />
+<meta property="article:modified_time" content="2021-09-16T13:07:26+08:00" /><meta property="og:site_name" content="Forest" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wxzforest.github.io/images/yiquan.jpg"/>
+
+<meta name="twitter:title" content="[慢SQL分析]数据量过大导致优化器使用错误索引"/>
+<meta name="twitter:description" content="数据量过大导致优化器使用错误索引1、线上告警：CPU接近跑满，突破“严重”级别阈值 2、问题SQL：抓取今早 08:16 分慢查询如下 1 2 3 4 5 6 7 select*fromorder_park_orderwhereplate_no=&#39;&#39;andtype=2andstatusin(0,1,2,3,4,99)orderbystart_datedesclimit1; 扫描"/>
+<meta name="application-name" content="Forest">
+<meta name="apple-mobile-web-app-title" content="Forest">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" /><link rel="prev" href="https://wxzforest.github.io/blog/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98mock/" /><link rel="next" href="https://wxzforest.github.io/blog/TyporaPicgo7%E7%89%9B%E4%BA%91/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "[慢SQL分析]数据量过大导致优化器使用错误索引",
+        "inLanguage": "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/wxzforest.github.io\/blog\/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95\/"
+        },"genre": "posts","keywords": "mysql","wordcount":  1113 ,
+        "url": "https:\/\/wxzforest.github.io\/blog\/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95\/","datePublished": "2021-09-16T13:07:26+08:00","dateModified": "2021-09-16T13:07:26+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"authors": [{
+                    "@type": "Person",
+                    "name": "Forest"
+                }],"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="desktop-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/series/"> 系列 </a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="mobile-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/series/" title="">系列</a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据量过大导致优化器使用错误索引">数据量过大导致优化器使用错误索引</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">[慢SQL分析]数据量过大导致优化器使用错误索引</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'><i class="author fas fa-user-circle fa-fw"></i><span class='screen-reader-text'>  </span><a href='https://wxzforest.github.io/authors/Forest'>Forest</a></span>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/performance/"><i class="far fa-folder fa-fw"></i>performance</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-09-16">2021-09-16</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2021-09-16">2021-09-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1113 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据量过大导致优化器使用错误索引">数据量过大导致优化器使用错误索引</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="数据量过大导致优化器使用错误索引" class="headerLink">
+    <a href="#%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95" class="header-mark"></a>数据量过大导致优化器使用错误索引</h1><p>1、线上告警：CPU接近跑满，突破“严重”级别阈值</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218154223483-d70781.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218154223483-d70781.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218154223483-d70781.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218154223483-d70781.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/20220218154223483-d70781.png"
+        title="img">
+2、问题SQL：抓取今早 08:16 分慢查询如下
+<img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218160038044-863312.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218160038044-863312.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218160038044-863312.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/20220218160038044-863312.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/20220218160038044-863312.png"
+        title="img"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> 
+</span><span class="w"></span><span class="k">from</span><span class="w"> </span><span class="n">order_park_order</span><span class="w"> 
+</span><span class="w"></span><span class="k">where</span><span class="w"> </span><span class="n">plate_no</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"> 
+</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">type</span><span class="o">=</span><span class="mi">2</span><span class="w"> 
+</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">99</span><span class="p">)</span><span class="w"> 
+</span><span class="w"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">start_date</span><span class="w"> </span><span class="k">desc</span><span class="w"> 
+</span><span class="w"></span><span class="k">limit</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>扫描订单表行数接近全表数据（约三千万），估计很大可能性是走的全表扫描。</p>
+<p>3、查看SQL的执行计划：
+走的是全索引扫描index类型（注意不是索引查找如ref、range类型等，index类型比all类型即全表扫描好不到哪儿去），使用的竟然是start_date字段上的索引，而且扫描行数才13行就离谱。</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516763.png"
+        title="img">
+这是因为explain工具本局限性，特别对如有limit的语句支持不够好，有时候统计并不准确。
+对于innodb引擎，可以使用下面语句来获取实际扫描行数：</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516774.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516774.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516774.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516774.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516774.png"
+        title="img"></p>
+<p>注意上面的 Handler_read_prev 含义参见官方文档：
+<a href="https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Handler_read_prev" target="_blank" rel="noopener noreffer">https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Handler_read_prev</a>
+The number of requests to read the previous row in key order. This read method is mainly used to optimize ORDER BY &hellip; DESC.
+含义就是在进行索引扫描时，按照索引倒序从数据文件里取数据的次数（一般就是有 ORDER BY &hellip; DESC 的情况)
+亦即实际扫描行数和慢查询日志里面的是相符的，都是接近三千万的全表数据量，而不是explain里面展示的仅仅13条。</p>
+<p>4、原SQL的耗时由此估计也是集中在过程中数据的回表处理，通过查看SQL的执行过程可以进一步确认：</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516778.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516778.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516778.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516778.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516778.png"
+        title="img">原SQL在测试环境执行一次需要4百多秒（低于线上配置），可以看到绝大部分耗时都是在 Sending data
+特别注意 Sending data 不是字面上的发送数据，而是包括收集（主要是回表)+发送数据
+这里加了limit，耗时主要就是在过程中的数据收集上，亦即前面分析的走到错误的 start_date 索引上导致的回表进行全表数据操作</p>
+<p>5、为什么会走到 start_date 上的索引？
+应该是优化器被 order by 给误导，优化器本意是利用索引的有序性，省去排序的成本，但这只是一方面。
+分析原SQL的where条件，where条件中只有 plate_no 有索引：
+（1）当where条件只有plate_no时，是可以用到索引的，执行还是很快的：</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516779.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516779.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516779.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516779.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516779.png"
+        title="img">注意上面的是 Using index 
+（2）当where条件不只有plate_no时，仍然可以用到索引，但执行变得很慢了：</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516743.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516743.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516743.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516743.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516743.png"
+        title="img">注意上面的 Using where ，与上面 Using index 区别， 表示因为索引 idx_park_order_plt_no 只包含 (plate_no,id)列，只通过该索引是没办法判断type=2条件的，因而会有通过索引收集到的一批id去返回数据文件取数据（回表）。
+（3）为什么加了type=2就变慢了呢？除了回表操作，还因为数据量的影响：
+where 条件 plate_no='' 实际数据量有100多万，也就是说差不多要回表获取百万计的行</p>
+<p><img
+        class="lazyload"
+        data-src="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763-16451735222648.png"
+        data-srcset="%e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763-16451735222648.png, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763-16451735222648.png 1.5x, %e6%95%b0%e6%8d%ae%e9%87%8f%e8%bf%87%e5%a4%a7%e5%af%bc%e8%87%b4%e4%bc%98%e5%8c%96%e5%99%a8%e4%bd%bf%e7%94%a8%e9%94%99%e8%af%af%e7%b4%a2%e5%bc%95.assets/202112031516763-16451735222648.png 2x"
+        data-sizes="auto"
+        alt="数据量过大导致优化器使用错误索引.assets/202112031516763-16451735222648.png"
+        title="img"></p>
+<p>总结：因为即使应用了正确索引但条件筛选的数据量大，再加上索引不能覆盖where条件的其他字段，导致发生回表的大量数据操作，本身成本较高！更糟糕的是，在成本较高的情况下，因为需要进行order by倒序的诱导，优化器后又进一步选择了错误的 start_date 索引上，最后的结果是性能更低！！如此多方面因素，造成了这样的情况结果。</p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-09-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" data-title="[慢SQL分析]数据量过大导致优化器使用错误索引" data-hashtags="mysql"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" data-hashtag="mysql"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" data-title="[慢SQL分析]数据量过大导致优化器使用错误索引"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/" data-title="[慢SQL分析]数据量过大导致优化器使用错误索引"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mysql/">mysql</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/blog/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98mock/" class="prev" rel="prev" title="微信支付mock"><i class="fas fa-angle-left fa-fw"></i>微信支付mock</a>
+            <a href="/blog/TyporaPicgo7%E7%89%9B%E4%BA%91/" class="next" rel="next" title="Typora&#43;picgo&#43;7牛云">Typora&#43;picgo&#43;7牛云<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2017 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/wxzForest" target="_blank" rel="noopener noreferrer">Forest</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div><script>
+                    if('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .register('/sw.min.js', { scope: '/' })
+                            .then(function(registration) {
+                            });
+                
+                        navigator.serviceWorker
+                            .ready
+                            .then(function(registration) {
+                            });
+                    }
+                </script></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js"></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":20},"comment":{},"data":{"desktop-header-typeit":"Forest","mobile-header-typeit":"Forest"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":true,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.1,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true},"twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/lib/twemoji/twemoji.min.js" defer></script><script type="text/javascript" src="/js/twemoji.min.js" defer></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/typeit.min.js"></script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></div>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>计算机网络学习笔记 - 系列 - Forest</title>
+        <link>https://wxzforest.github.io/series/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <description>计算机网络学习笔记 - 系列 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Wed, 09 Mar 2022 10:31:21 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/series/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+    <title>计算机网络第6章（应用层）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</link>
+    <pubDate>Wed, 09 Mar 2022 10:31:21 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</guid>
+    <description><![CDATA[6.1、应用层概述我们在浏览器的地址中输入某个网站的域名后，就可以访问该网站的内容，这个就是万维网WWW应用，其相关的应用层协议为超文本传送]]></description>
+</item><item>
+    <title>计算机网络第5章（传输层）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/</link>
+    <pubDate>Tue, 08 Mar 2022 22:29:21 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/</guid>
+    <description><![CDATA[5.1、运输层概述概念进程之间的通信 从通信和信息处理的角度看，运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功]]></description>
+</item><item>
+    <title>计算机网络第4章（网络层）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/</link>
+    <pubDate>Tue, 08 Mar 2022 21:02:21 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/</guid>
+    <description><![CDATA[4.1、网络层概述简介 网络层的主要任务是实现网络互连，进而实现数据包在各网络之间的传输 这些异构型网络N1~N7如果只是需要各自内部通信，他们]]></description>
+</item><item>
+    <title>计算机网络第3章（数据链路层）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</link>
+    <pubDate>Tue, 08 Mar 2022 15:18:31 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</guid>
+    <description><![CDATA[3.1、数据链路层概述概述链路是从一个结点到相邻结点的一段物理线路，数据链路则是在链路的基础上增加了一些必要的硬件（如网络适配器）和软件（如]]></description>
+</item><item>
+    <title>计算机网络第2章（物理层）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%E7%89%A9%E7%90%86%E5%B1%82/</link>
+    <pubDate>Tue, 08 Mar 2022 12:13:21 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%E7%89%A9%E7%90%86%E5%B1%82/</guid>
+    <description><![CDATA[2.1、物理层的基本概念2.2、物理层下面的传输媒体传输媒体也称为传输介质或传输媒介，他就是数据传输系统中在发送器和接收器之间的物理通路。传]]></description>
+</item><item>
+    <title>计算机网络第1章（概述）</title>
+    <link>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%E6%A6%82%E8%BF%B0/</link>
+    <pubDate>Tue, 08 Mar 2022 10:26:21 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%E6%A6%82%E8%BF%B0/</guid>
+    <description><![CDATA[学习资料：[计算机网络微课堂——高军（https://www.bilibili.com/video/BV1c4411d7jb) 图示说明代表着]]></description>
+</item></channel>
+</rss>

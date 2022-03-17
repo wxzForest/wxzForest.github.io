@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>hexo - 标签 - Forest</title>
+        <link>https://wxzforest.github.io/tags/hexo/</link>
+        <description>hexo - 标签 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Tue, 28 Dec 2021 16:18:46 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/tags/hexo/" rel="self" type="application/rss+xml" /><item>
+    <title>搭建hexo</title>
+    <link>https://wxzforest.github.io/blog/%E5%BC%84%E4%B8%AAhexo%E7%8E%A9%E7%8E%A9/</link>
+    <pubDate>Tue, 28 Dec 2021 16:18:46 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E5%BC%84%E4%B8%AAhexo%E7%8E%A9%E7%8E%A9/</guid>
+    <description><![CDATA[步骤 安装hexo 1 npm install -g hexo-cli 初始化hexo 1 2 3 4 5 6 7 8 9 10 11 12 13 #会生成一个myblog文件夹，文件夹内生成相关配置文件 hexo init myblog #下载nod]]></description>
+</item></channel>
+</rss>

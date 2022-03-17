@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">[转]MQTT压测 - Forest</title><meta name="Description" content="Forest的blog"><meta property="og:title" content="[转]MQTT压测" />
+<meta property="og:description" content="背景因为某天晚上的直播课,在开始直播间刚进入教室的时候,某些Android低端机会ANR. 经过排查是客户端收到了大量的进入教室和退出教室信令" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" /><meta property="og:image" content="https://wxzforest.github.io/images/yiquan.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-09T17:40:41+08:00" />
+<meta property="article:modified_time" content="2022-01-09T17:40:41+08:00" /><meta property="og:site_name" content="Forest" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wxzforest.github.io/images/yiquan.jpg"/>
+
+<meta name="twitter:title" content="[转]MQTT压测"/>
+<meta name="twitter:description" content="背景因为某天晚上的直播课,在开始直播间刚进入教室的时候,某些Android低端机会ANR. 经过排查是客户端收到了大量的进入教室和退出教室信令"/>
+<meta name="application-name" content="Forest">
+<meta name="apple-mobile-web-app-title" content="Forest">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" /><link rel="prev" href="https://wxzforest.github.io/blog/%E5%BC%84%E4%B8%AAhugo%E7%8E%A9%E7%8E%A9/" /><link rel="next" href="https://wxzforest.github.io/blog/JS%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "[转]MQTT压测",
+        "inLanguage": "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/wxzforest.github.io\/blog\/MQTT%E5%8E%8B%E6%B5%8B\/"
+        },"genre": "posts","keywords": "mqtt","wordcount":  2051 ,
+        "url": "https:\/\/wxzforest.github.io\/blog\/MQTT%E5%8E%8B%E6%B5%8B\/","datePublished": "2022-01-09T17:40:41+08:00","dateModified": "2022-01-09T17:40:41+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"authors": [{
+                    "@type": "Person",
+                    "name": "Forest"
+                }],"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="desktop-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/series/"> 系列 </a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="mobile-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/series/" title="">系列</a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#什么是信令">什么是信令?</a></li>
+    <li><a href="#mqtt协议">MQTT协议</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#名词">名词</a>
+          <ul>
+            <li><a href="#发布">发布</a></li>
+            <li><a href="#订阅">订阅</a></li>
+            <li><a href="#主题">主题</a></li>
+            <li><a href="#会话保持">会话保持</a></li>
+            <li><a href="#qos">QoS:</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#搭建mqtt服务">搭建MQTT服务</a>
+      <ul>
+        <li><a href="#本地搭建">本地搭建</a></li>
+        <li><a href="#使用免费的">使用免费的</a></li>
+      </ul>
+    </li>
+    <li><a href="#python连接mqtt">python连接MQTT</a>
+      <ul>
+        <li><a href="#paho-mqtt">paho-mqtt</a></li>
+        <li><a href="#发布-1">发布</a></li>
+        <li><a href="#订阅-1">订阅</a></li>
+      </ul>
+    </li>
+    <li><a href="#jmeter压测mqtt">jmeter压测MQTT</a></li>
+    <li><a href="#locust压测mqtt">locust压测MQTT</a></li>
+    <li><a href="#客户端性能分析">客户端性能分析</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">[转]MQTT压测</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'><i class="author fas fa-user-circle fa-fw"></i><span class='screen-reader-text'>  </span><a href='https://wxzforest.github.io/authors/Forest'>Forest</a></span>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/performance/"><i class="far fa-folder fa-fw"></i>performance</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-01-09">2022-01-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-01-09">2022-01-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2051 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#什么是信令">什么是信令?</a></li>
+    <li><a href="#mqtt协议">MQTT协议</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#名词">名词</a>
+          <ul>
+            <li><a href="#发布">发布</a></li>
+            <li><a href="#订阅">订阅</a></li>
+            <li><a href="#主题">主题</a></li>
+            <li><a href="#会话保持">会话保持</a></li>
+            <li><a href="#qos">QoS:</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#搭建mqtt服务">搭建MQTT服务</a>
+      <ul>
+        <li><a href="#本地搭建">本地搭建</a></li>
+        <li><a href="#使用免费的">使用免费的</a></li>
+      </ul>
+    </li>
+    <li><a href="#python连接mqtt">python连接MQTT</a>
+      <ul>
+        <li><a href="#paho-mqtt">paho-mqtt</a></li>
+        <li><a href="#发布-1">发布</a></li>
+        <li><a href="#订阅-1">订阅</a></li>
+      </ul>
+    </li>
+    <li><a href="#jmeter压测mqtt">jmeter压测MQTT</a></li>
+    <li><a href="#locust压测mqtt">locust压测MQTT</a></li>
+    <li><a href="#客户端性能分析">客户端性能分析</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>背景</h1><p>因为某天晚上的直播课,在开始直播间刚进入教室的时候,某些Android低端机会ANR.</p>
+<p>经过排查是客户端收到了大量的进入教室和退出教室信令,客户端解析大量信令,会导致客户端cpu飙升.</p>
+<p>因为直播信令是基于MQTT协议,每个学生端都会订阅同样的topic,所以学生端也会收到其他学生端的进入教室和退出教室信令.</p>
+<p>我们基于上面的问题,需要对客户端进行压测,看一个客户端需要收到多少QPS的情况下不会ANR.</p>
+<p>我们日常工作中很少会压测MQTT,基本上都是HTTP协议,本次也是记录一些学习过程.</p>
+<h1 id="什么是信令" class="headerLink">
+    <a href="#%e4%bb%80%e4%b9%88%e6%98%af%e4%bf%a1%e4%bb%a4" class="header-mark"></a>什么是信令?</h1><p>直播是一套负责的业务体系,信令更新是底层的交互方式,所以先要了解什么是信令.</p>
+<p>可以参考: <a href="https://zhuanlan.zhihu.com/p/72028159" target="_blank" rel="noopener noreffer">https://zhuanlan.zhihu.com/p/72028159</a></p>
+<p>直播信令: 简单来说就是老师端发给学生端(客户端)的一些信号指令,比如:连麦、视频、发题、留言等.</p>
+<p>这些信令是双向的、也有可能是一对多.我们用的MQTT协议,MQTT提供商有很多,比如融云、阿里云等</p>
+<h1 id="mqtt协议" class="headerLink">
+    <a href="#mqtt%e5%8d%8f%e8%ae%ae" class="header-mark"></a>MQTT协议</h1><h2 id="概念" class="headerLink">
+    <a href="#%e6%a6%82%e5%bf%b5" class="header-mark"></a>概念</h2><p>MQTT协议是基于发布/订阅模式的物联网通信协议，凭借简单易实现、支持 QoS、报文小等特点，占据了物联网协议的半壁江山</p>
+<p>MQTT协议广泛应用于物联网、移动互联网、智能硬件、车联网、电力、能源等领域</p>
+<h2 id="名词" class="headerLink">
+    <a href="#%e5%90%8d%e8%af%8d" class="header-mark"></a>名词</h2><h3 id="发布" class="headerLink">
+    <a href="#%e5%8f%91%e5%b8%83" class="header-mark"></a>发布</h3><h3 id="订阅" class="headerLink">
+    <a href="#%e8%ae%a2%e9%98%85" class="header-mark"></a>订阅</h3><h3 id="主题" class="headerLink">
+    <a href="#%e4%b8%bb%e9%a2%98" class="header-mark"></a>主题</h3><h3 id="会话保持" class="headerLink">
+    <a href="#%e4%bc%9a%e8%af%9d%e4%bf%9d%e6%8c%81" class="header-mark"></a>会话保持</h3><h3 id="qos" class="headerLink">
+    <a href="#qos" class="header-mark"></a>QoS:</h3><p>QoS 0 是一种 &ldquo;fire and forget&rdquo; 的消息发送模式：Sender (可能是 Publisher 或者 Broker) 发送一条消息之后，就不再关心它有没有发送到对方，也不设置任何重发机制。</p>
+<p>QoS 1 包含了简单的重发机制，Sender 发送消息之后等待接收者的 ACK，如果没收到 ACK 则重新发送消息。这种模式能保证消息至少能到达一次，但无法保证消息重复。</p>
+<p>QoS 2 设计了略微复杂的重发和重复消息发现机制，保证消息到达对方并且严格只到达一次</p>
+<h1 id="搭建mqtt服务" class="headerLink">
+    <a href="#%e6%90%ad%e5%bb%bamqtt%e6%9c%8d%e5%8a%a1" class="header-mark"></a>搭建MQTT服务</h1><h2 id="本地搭建" class="headerLink">
+    <a href="#%e6%9c%ac%e5%9c%b0%e6%90%ad%e5%bb%ba" class="header-mark"></a>本地搭建</h2><p>在Mac机器上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">mqtt: http://127.0.0.1:18083
+admin/public
+</code></pre></td></tr></table>
+</div>
+</div><p>发布消息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">brew install mosquitto
+mosquitto_sub -h 127.0.0.1 -p 1883 -t topic -q 2
+mosquitto_pub -h 127.0.0.1 -p 1883 -t topic -q 1 -m &#34;Hello, MQTT!&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/5FEA95D0B7D34495976F74365FF2D7A1.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/5FEA95D0B7D34495976F74365FF2D7A1.png, MQTT%e5%8e%8b%e6%b5%8b.assets/5FEA95D0B7D34495976F74365FF2D7A1.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/5FEA95D0B7D34495976F74365FF2D7A1.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/5FEA95D0B7D34495976F74365FF2D7A1.png"
+        title="img"></p>
+<h2 id="使用免费的" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e5%85%8d%e8%b4%b9%e7%9a%84" class="header-mark"></a>使用免费的</h2><p>使用 EMQ X 提供的 免费公共 MQTT 服务器，该服务基于 EMQ X 的 MQTT 物联网云平台 创建。服务器接入信息如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Broker: broker.emqx.io
+
+TCP Port: 1883
+
+Websocket Port: 8083
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="python连接mqtt" class="headerLink">
+    <a href="#python%e8%bf%9e%e6%8e%a5mqtt" class="header-mark"></a>python连接MQTT</h1><h2 id="paho-mqtt" class="headerLink">
+    <a href="#paho-mqtt" class="header-mark"></a>paho-mqtt</h2><p>paho-mqtt 是目前 Python 中使用较多的 MQTT 客户端库，它在 Python 2.7 或 3.x 上为客户端类提供了对 MQTT v3.1 和 v3.1.1 的支持。它还提供了一些帮助程序功能，使将消息发布到 MQTT 服务器变得非常简单。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">pip3 install -i https://pypi.doubanio.com/simple paho-mqtt
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="发布-1" class="headerLink">
+    <a href="#%e5%8f%91%e5%b8%83-1" class="header-mark"></a>发布</h2><p>脚本如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">import time
+import random
+from paho.mqtt import client as mqtt_client
+
+&#34;&#34;&#34;
+发布者
+&#34;&#34;&#34;
+
+
+broker = &#39;broker.emqx.io&#39;
+port = 1883
+topic = &#34;/python/mqtt&#34;
+
+client_id = f&#39;python-mqtt-{random.randint(0, 1000)}&#39;
+
+
+def connect_mqtt():
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print(&#34;Connected to MQTT Broker!&#34;)
+        else:
+            print(&#34;Failed to connect, return code %d\n&#34;, rc)
+    # Set Connecting Client ID
+    client = mqtt_client.Client(client_id)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
+
+
+def publish(client):
+    msg_count = 0
+    while True:
+        time.sleep(1)
+        msg = f&#34;messages: {msg_count}&#34;
+        result = client.publish(topic, msg)
+        # result: [0, 1]
+        status = result[0]
+        if status == 0:
+            print(f&#34;Send `{msg}` to topic `{topic}`&#34;)
+        else:
+            print(f&#34;Failed to send message to topic {topic}&#34;)
+        msg_count += 1
+
+
+def run():
+    client = connect_mqtt()
+    client.loop_start()
+    publish(client)
+
+
+if __name__ == &#39;__main__&#39;:
+    run()
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/F426EF1BC3834551B86650A3D5B3F8D1.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/F426EF1BC3834551B86650A3D5B3F8D1.png, MQTT%e5%8e%8b%e6%b5%8b.assets/F426EF1BC3834551B86650A3D5B3F8D1.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/F426EF1BC3834551B86650A3D5B3F8D1.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/F426EF1BC3834551B86650A3D5B3F8D1.png"
+        title="img"></p>
+<h2 id="订阅-1" class="headerLink">
+    <a href="#%e8%ae%a2%e9%98%85-1" class="header-mark"></a>订阅</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"># python3.6
+
+import random
+
+from paho.mqtt import client as mqtt_client
+
+
+broker = &#39;broker.emqx.io&#39;
+port = 1883
+topic = &#34;/python/mqtt&#34;
+# generate client ID with pub prefix randomly
+client_id = f&#39;python-mqtt-{random.randint(0, 100)}&#39;
+
+
+def connect_mqtt() -&gt; mqtt_client:
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print(&#34;Connected to MQTT Broker!&#34;)
+        else:
+            print(&#34;Failed to connect, return code %d\n&#34;, rc)
+
+    client = mqtt_client.Client(client_id)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
+
+
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        print(f&#34;Received `{msg.payload.decode()}` from `{msg.topic}` topic&#34;)
+
+    client.subscribe(topic)
+    client.on_message = on_message
+
+
+def run():
+    client = connect_mqtt()
+    subscribe(client)
+    client.loop_forever()
+
+
+if __name__ == &#39;__main__&#39;:
+    run()
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/944299DA0A2644DA90DAC668CEA201C7.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/944299DA0A2644DA90DAC668CEA201C7.png, MQTT%e5%8e%8b%e6%b5%8b.assets/944299DA0A2644DA90DAC668CEA201C7.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/944299DA0A2644DA90DAC668CEA201C7.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/944299DA0A2644DA90DAC668CEA201C7.png"
+        title="img"></p>
+<h1 id="jmeter压测mqtt" class="headerLink">
+    <a href="#jmeter%e5%8e%8b%e6%b5%8bmqtt" class="header-mark"></a>jmeter压测MQTT</h1><p>jmeter本身就支持多协议压测,需要安装扩展插件.</p>
+<p>插件下载完成后放到lib下.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">https://github.com/hgwz/Java-websocket/tree/master/lib/ext/mqtt-xmeter-1.0.1-jar-with- dependencies.jar
+</code></pre></td></tr></table>
+</div>
+</div><p>在取样器能看到MQTT插件说明安装成功.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/A6BD0036682F44A3BF74E8F9EB667F09.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/A6BD0036682F44A3BF74E8F9EB667F09.png, MQTT%e5%8e%8b%e6%b5%8b.assets/A6BD0036682F44A3BF74E8F9EB667F09.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/A6BD0036682F44A3BF74E8F9EB667F09.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/A6BD0036682F44A3BF74E8F9EB667F09.png"
+        title="img"></p>
+<p>在connect中输入host、username、password、clientid</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/98C6FE7F6605493EB5F5C87D91078A91.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/98C6FE7F6605493EB5F5C87D91078A91.png, MQTT%e5%8e%8b%e6%b5%8b.assets/98C6FE7F6605493EB5F5C87D91078A91.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/98C6FE7F6605493EB5F5C87D91078A91.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/98C6FE7F6605493EB5F5C87D91078A91.png"
+        title="img"></p>
+<p>在pub中输入topic、qos、message</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/BF142D2AC93F4F53B4925EE51C979C27.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/BF142D2AC93F4F53B4925EE51C979C27.png, MQTT%e5%8e%8b%e6%b5%8b.assets/BF142D2AC93F4F53B4925EE51C979C27.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/BF142D2AC93F4F53B4925EE51C979C27.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/BF142D2AC93F4F53B4925EE51C979C27.png"
+        title="img"></p>
+<p>message type有三种格式,根据自己需要选择.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/18D94BA3EA7047D2B14A86F8F4D648AE.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/18D94BA3EA7047D2B14A86F8F4D648AE.png, MQTT%e5%8e%8b%e6%b5%8b.assets/18D94BA3EA7047D2B14A86F8F4D648AE.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/18D94BA3EA7047D2B14A86F8F4D648AE.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/18D94BA3EA7047D2B14A86F8F4D648AE.png"
+        title="img"></p>
+<p>不能使用一个clientid,会出现连不上mqtt.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/46D136EBA7D34E71BD5B55BD6890106A.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/46D136EBA7D34E71BD5B55BD6890106A.png, MQTT%e5%8e%8b%e6%b5%8b.assets/46D136EBA7D34E71BD5B55BD6890106A.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/46D136EBA7D34E71BD5B55BD6890106A.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/46D136EBA7D34E71BD5B55BD6890106A.png"
+        title="img"></p>
+<p>尽量模拟多个客户端,使用jmeter的随机函数.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/FE88CAD9A6C14FAAA9601DBE2058C8A5.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/FE88CAD9A6C14FAAA9601DBE2058C8A5.png, MQTT%e5%8e%8b%e6%b5%8b.assets/FE88CAD9A6C14FAAA9601DBE2058C8A5.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/FE88CAD9A6C14FAAA9601DBE2058C8A5.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/FE88CAD9A6C14FAAA9601DBE2058C8A5.png"
+        title="img"></p>
+<p>此时连接和发送成功.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/AD40A9B9C7EE4E8BA9E875D378851AE7.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/AD40A9B9C7EE4E8BA9E875D378851AE7.png, MQTT%e5%8e%8b%e6%b5%8b.assets/AD40A9B9C7EE4E8BA9E875D378851AE7.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/AD40A9B9C7EE4E8BA9E875D378851AE7.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/AD40A9B9C7EE4E8BA9E875D378851AE7.png"
+        title="img"></p>
+<h1 id="locust压测mqtt" class="headerLink">
+    <a href="#locust%e5%8e%8b%e6%b5%8bmqtt" class="header-mark"></a>locust压测MQTT</h1><p>locust是python的一个基于协程的类库,locust也是可以进行MQTT协议压测</p>
+<p>可以参考这个帖子,写的很详细.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">https://blog.csdn.net/qq_39214101/article/details/107997414
+</code></pre></td></tr></table>
+</div>
+</div><p>脚本如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">#!/user/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import time
+from locust import User, task, between, events
+from paho.mqtt.client import Client
+
+broker = &#39;broker.emqx.io&#39;
+
+topic = &#34;/python/mqtt&#34;
+
+class MQTTPubClient(Client):
+
+    # 要集成paho的Client,最底层用的也是paho
+
+    def on_connect_rewrite(self, client, userdata, flags, rc):
+        print(&#34;Connected with result code: &#34; + str(rc))
+
+    def on_message_rewrite(self, client, userdata, msg):
+        print(msg.topic + &#34; &#34; + str(msg.payload))
+
+    Client.on_connect = on_connect_rewrite
+    Client.on_message = on_message_rewrite
+
+    def __getattribute__(self, name):
+        func = Client.__getattribute__(self, name)
+        print(&#34;func:{}&#34;.format(func))
+
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            try:
+                result = func(*args, **kwargs)
+                print(&#39;*&#39; * 100, &#39;\n&#39;, result, &#39;$&#39; * 100)
+            except Exception as e:
+                total_time = int((time.time() - start_time) * 1000)
+                events.request_failure.fire(request_type=&#34;mqtt_pub&#34;, name=name,
+                                            response_time=total_time, exception=e,
+                                            response_length=0)
+            else:
+                total_time = int((time.time() - start_time) * 1000)
+                events.request_success.fire(request_type=&#34;mqtt_pub&#34;, name=name,
+                                            response_time=total_time, response_length=0)
+
+        return wrapper
+
+
+class MQTTUser(User):
+    abstract = True
+
+    def __init__(self, *args, **kwargs):
+        super(MQTTUser, self).__init__(*args, **kwargs)
+        self.client = MQTTPubClient()
+
+
+class PubUser(MQTTUser):
+    wait_time = between(3, 5)
+
+    def on_start(self):
+        self.client.connect(self.host, 1883, 1000)
+
+    @task
+    def test_mqtt_pub(self):
+        print(&#34;start to send mqtt message&#34;)
+        print(self.client)
+        self.client.publish(topic, payload=&#39;testggg&#39;, qos=0)
+
+
+class SubUser(MQTTUser):
+    wait_time = between(3, 5)
+
+    def on_start(self):
+        self.client.connect(broker, 1883, 600)
+
+    @task
+    def test_mqtt_sub(self):
+        print(&#34;recive message sussecc!!!&#34;)
+        self.client.subscribe(topic, qos=0)
+
+
+if __name__ == &#39;__main__&#39;:
+    os.system(&#34;locust -f locust_mqtt_demo1.py -u 1 -r 1 --headless  --host=127.0.0.1&#34;)
+</code></pre></td></tr></table>
+</div>
+</div><p>发布者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">locust -f locust_mqtt.py PubUser -u 1 -r 1 --host=127.0.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/BC38FB86D70C4CF89DC9059312F8B215.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/BC38FB86D70C4CF89DC9059312F8B215.png, MQTT%e5%8e%8b%e6%b5%8b.assets/BC38FB86D70C4CF89DC9059312F8B215.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/BC38FB86D70C4CF89DC9059312F8B215.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/BC38FB86D70C4CF89DC9059312F8B215.png"
+        title="img"></p>
+<p>订阅者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">locust -f locust_mqtt.py PubUser -u 1 -r 1 --host=127.0.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/1ED0EE3B5CC2491CAF44D04464F15993.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/1ED0EE3B5CC2491CAF44D04464F15993.png, MQTT%e5%8e%8b%e6%b5%8b.assets/1ED0EE3B5CC2491CAF44D04464F15993.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/1ED0EE3B5CC2491CAF44D04464F15993.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/1ED0EE3B5CC2491CAF44D04464F15993.png"
+        title="img"></p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/729948C70C1943FCAB301271B3DD91F3.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/729948C70C1943FCAB301271B3DD91F3.png, MQTT%e5%8e%8b%e6%b5%8b.assets/729948C70C1943FCAB301271B3DD91F3.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/729948C70C1943FCAB301271B3DD91F3.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/729948C70C1943FCAB301271B3DD91F3.png"
+        title="img"></p>
+<p>在locust使用paho,由于是继承了client类, 在使用是有些方法可以根据业务需求来重写</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/81D42D839A3041309A1A1687FCF27493.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/81D42D839A3041309A1A1687FCF27493.png, MQTT%e5%8e%8b%e6%b5%8b.assets/81D42D839A3041309A1A1687FCF27493.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/81D42D839A3041309A1A1687FCF27493.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/81D42D839A3041309A1A1687FCF27493.png"
+        title="img"></p>
+<h1 id="客户端性能分析" class="headerLink">
+    <a href="#%e5%ae%a2%e6%88%b7%e7%ab%af%e6%80%a7%e8%83%bd%e5%88%86%e6%9e%90" class="header-mark"></a>客户端性能分析</h1><p>由于文章最开始提到客户端在直播间收到大量信令会ANR,我们需要看关注下设备的CPU.</p>
+<p>这里使用的工具是perfdog: <a href="https://perfdog.qq.com/" target="_blank" rel="noopener noreffer">https://perfdog.qq.com/</a>,这个工具安装使用很简单, 这里就讲解了.</p>
+<p>下面这张图是,模拟压测产生ANR的客户端性能消耗.</p>
+<p><img
+        class="lazyload"
+        data-src="MQTT%e5%8e%8b%e6%b5%8b.assets/730C96A3816C4F98A7793247108F1FDA.png"
+        data-srcset="MQTT%e5%8e%8b%e6%b5%8b.assets/730C96A3816C4F98A7793247108F1FDA.png, MQTT%e5%8e%8b%e6%b5%8b.assets/730C96A3816C4F98A7793247108F1FDA.png 1.5x, MQTT%e5%8e%8b%e6%b5%8b.assets/730C96A3816C4F98A7793247108F1FDA.png 2x"
+        data-sizes="auto"
+        alt="MQTT压测.assets/730C96A3816C4F98A7793247108F1FDA.png"
+        title="img"></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-01-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" data-title="[转]MQTT压测" data-hashtags="mqtt"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" data-hashtag="mqtt"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" data-title="[转]MQTT压测"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="https://wxzforest.github.io/blog/MQTT%E5%8E%8B%E6%B5%8B/" data-title="[转]MQTT压测"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mqtt/">mqtt</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/blog/%E5%BC%84%E4%B8%AAhugo%E7%8E%A9%E7%8E%A9/" class="prev" rel="prev" title="使用hugo"><i class="fas fa-angle-left fa-fw"></i>使用hugo</a>
+            <a href="/blog/JS%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87/" class="next" rel="next" title="JS变量提升、函数提升">JS变量提升、函数提升<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2017 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/wxzForest" target="_blank" rel="noopener noreferrer">Forest</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div><script>
+                    if('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .register('/sw.min.js', { scope: '/' })
+                            .then(function(registration) {
+                            });
+                
+                        navigator.serviceWorker
+                            .ready
+                            .then(function(registration) {
+                            });
+                    }
+                </script></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js"></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":20},"comment":{},"data":{"desktop-header-typeit":"Forest","mobile-header-typeit":"Forest"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":true,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.1,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true},"twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/lib/twemoji/twemoji.min.js" defer></script><script type="text/javascript" src="/js/twemoji.min.js" defer></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/typeit.min.js"></script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></div>
+</body>
+
+</html>

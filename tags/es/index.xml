@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>es - 标签 - Forest</title>
+        <link>https://wxzforest.github.io/tags/es/</link>
+        <description>es - 标签 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Sat, 30 Mar 2019 14:19:26 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/tags/es/" rel="self" type="application/rss+xml" /><item>
+    <title>Docker安装部署使用elasticsearch</title>
+    <link>https://wxzforest.github.io/blog/Docker%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E4%BD%BF%E7%94%A8elasticsearch/</link>
+    <pubDate>Sat, 30 Mar 2019 14:19:26 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/Docker%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E4%BD%BF%E7%94%A8elasticsearch/</guid>
+    <description><![CDATA[前言：本来想装个ELK，结果小服务器内存开销过大跑不动，本来也没什么日志可看，只好凑活着弄个es玩玩。 一、Docker部署es及es-hea]]></description>
+</item></channel>
+</rss>

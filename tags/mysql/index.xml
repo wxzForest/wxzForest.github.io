@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>mysql - 标签 - Forest</title>
+        <link>https://wxzforest.github.io/tags/mysql/</link>
+        <description>mysql - 标签 - Forest</description>
+        <generator>Hugo -- gohugo.io</generator><managingEditor>wxzforest@gmail.com (Forest)</managingEditor>
+            <webMaster>wxzforest@gmail.com (Forest)</webMaster><lastBuildDate>Thu, 16 Sep 2021 13:07:26 &#43;0800</lastBuildDate><atom:link href="https://wxzforest.github.io/tags/mysql/" rel="self" type="application/rss+xml" /><item>
+    <title>[慢SQL分析]数据量过大导致优化器使用错误索引</title>
+    <link>https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/</link>
+    <pubDate>Thu, 16 Sep 2021 13:07:26 &#43;0800</pubDate><author>
+                    <name>Forest</name><uri>https://github.com/wxzForest</uri></author><guid>https://wxzforest.github.io/blog/%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E4%BC%98%E5%8C%96%E5%99%A8%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E7%B4%A2%E5%BC%95/</guid>
+    <description><![CDATA[数据量过大导致优化器使用错误索引1、线上告警：CPU接近跑满，突破“严重”级别阈值 2、问题SQL：抓取今早 08:16 分慢查询如下 1 2 3 4 5 6 7 select*fromorder_park_orderwhereplate_no=&#39;&#39;andtype=2andstatusin(0,1,2,3,4,99)orderbystart_datedesclimit1; 扫描]]></description>
+</item></channel>
+</rss>

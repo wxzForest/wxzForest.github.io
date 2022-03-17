@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">Python嵌套函数、闭包、装饰器 - Forest</title><meta name="Description" content="Forest的blog"><meta property="og:title" content="Python嵌套函数、闭包、装饰器" />
+<meta property="og:description" content="嵌套函数的调用示例1 2 3 4 5 6 7 8 9 def func1(a1): def func2(a2): def func3(a3): print(f&#39;{a1},{a2},{a3}&#39;) return func3 return func2 func1(1)(2)(3) # 1,2,3 闭包示例1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 def func1(): def func2(a2): def func3(a3): print(f&#39;{a2},{a3}&#39;) print(&#34;func3&#34;) print(func3.__closure__) return func3 print(&#34;func2&#34;) print(func2.__closure__) return func2" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/" /><meta property="og:image" content="https://wxzforest.github.io/images/yiquan.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-06-30T16:48:58+08:00" />
+<meta property="article:modified_time" content="2019-06-30T16:48:58+08:00" /><meta property="og:site_name" content="Forest" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wxzforest.github.io/images/yiquan.jpg"/>
+
+<meta name="twitter:title" content="Python嵌套函数、闭包、装饰器"/>
+<meta name="twitter:description" content="嵌套函数的调用示例1 2 3 4 5 6 7 8 9 def func1(a1): def func2(a2): def func3(a3): print(f&#39;{a1},{a2},{a3}&#39;) return func3 return func2 func1(1)(2)(3) # 1,2,3 闭包示例1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 def func1(): def func2(a2): def func3(a3): print(f&#39;{a2},{a3}&#39;) print(&#34;func3&#34;) print(func3.__closure__) return func3 print(&#34;func2&#34;) print(func2.__closure__) return func2"/>
+<meta name="application-name" content="Forest">
+<meta name="apple-mobile-web-app-title" content="Forest">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/" /><link rel="prev" href="https://wxzforest.github.io/blog/pycharm%E7%94%9F%E6%88%90allureReport%E5%A4%B1%E8%B4%A5/" /><link rel="next" href="https://wxzforest.github.io/blog/%E7%94%A8%E6%88%B7CA%E8%AF%81%E4%B9%A6%E9%99%90%E5%88%B6/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Python嵌套函数、闭包、装饰器",
+        "inLanguage": "",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/wxzforest.github.io\/blog\/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8\/"
+        },"genre": "posts","wordcount":  1971 ,
+        "url": "https:\/\/wxzforest.github.io\/blog\/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8\/","datePublished": "2019-06-30T16:48:58+08:00","dateModified": "2019-06-30T16:48:58+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"authors": [{
+                    "@type": "Person",
+                    "name": "Forest"
+                }],"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="desktop-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/series/"> 系列 </a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Forest"><img
+        class="lazyload logo"
+        data-src="/yiquan.jpg"
+        data-srcset="/yiquan.jpg, /yiquan.jpg 1.5x, /yiquan.jpg 2x"
+        data-sizes="auto"
+        alt="/yiquan.jpg"
+        title="/yiquan.jpg"><span class="header-title-pre"><i class='far fa-edit fa-fw'></i></span><span id="mobile-header-typeit" class="typeit"></span><span class="header-title-post"><span style="font-family:times;color:#f0f0f0;font-size:18px;font-weight:300">&nbsp &nbsp(｡･∀･)つロ</span></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/series/" title="">系列</a><a class="menu-item" href="https://github.com/wxzForest" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="#" onclick="return false;" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <ul>
+                    <li><a href="#嵌套函数的调用示例">嵌套函数的调用示例</a></li>
+                    <li><a href="#闭包示例">闭包示例</a></li>
+                    <li><a href="#装饰器示例">装饰器示例</a></li>
+                    <li><a href="#带参数的装饰器示例">带参数的装饰器示例</a></li>
+                    <li><a href="#如果想直接访问原始的无装饰器的函数怎么办httpspython3-cookbookreadthedocsiozh_cnlatestc09p03_unwrapping_decoratorhtml"><a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c09/p03_unwrapping_decorator.html">如果想直接访问原始的无装饰器的函数怎么办？</a></a></li>
+                    <li><a href="#装饰器到底是什么">装饰器到底是什么</a></li>
+                    <li><a href="#多个装饰器">多个装饰器</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Python嵌套函数、闭包、装饰器</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'><i class="author fas fa-user-circle fa-fw"></i><span class='screen-reader-text'>  </span><a href='https://wxzforest.github.io/authors/Forest'>Forest</a></span>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/python/"><i class="far fa-folder fa-fw"></i>python</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-06-30">2019-06-30</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-06-30">2019-06-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1971 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <ul>
+                    <li><a href="#嵌套函数的调用示例">嵌套函数的调用示例</a></li>
+                    <li><a href="#闭包示例">闭包示例</a></li>
+                    <li><a href="#装饰器示例">装饰器示例</a></li>
+                    <li><a href="#带参数的装饰器示例">带参数的装饰器示例</a></li>
+                    <li><a href="#如果想直接访问原始的无装饰器的函数怎么办httpspython3-cookbookreadthedocsiozh_cnlatestc09p03_unwrapping_decoratorhtml"><a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c09/p03_unwrapping_decorator.html">如果想直接访问原始的无装饰器的函数怎么办？</a></a></li>
+                    <li><a href="#装饰器到底是什么">装饰器到底是什么</a></li>
+                    <li><a href="#多个装饰器">多个装饰器</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h5 id="嵌套函数的调用示例" class="headerLink">
+    <a href="#%e5%b5%8c%e5%a5%97%e5%87%bd%e6%95%b0%e7%9a%84%e8%b0%83%e7%94%a8%e7%a4%ba%e4%be%8b" class="header-mark"></a>嵌套函数的调用示例</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def func1(a1):
+    def func2(a2):
+        def func3(a3):
+            print(f&#39;{a1},{a2},{a3}&#39;)
+        return func3
+    return func2
+
+func1(1)(2)(3)
+# 1,2,3
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="闭包示例" class="headerLink">
+    <a href="#%e9%97%ad%e5%8c%85%e7%a4%ba%e4%be%8b" class="header-mark"></a>闭包示例</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def func1():
+    def func2(a2):
+        def func3(a3):
+            print(f&#39;{a2},{a3}&#39;)
+        print(&#34;func3&#34;)
+        print(func3.__closure__)
+        return func3
+    print(&#34;func2&#34;)
+    print(func2.__closure__)
+    return func2
+print(func1.__closure__)
+
+func1()(2)(3)
+# None
+# func2
+# None
+# func3
+# (&lt;cell at 0x000001FCA4B03AC8: int object at 0x00007FFD0F3A6690&gt;,)
+# 2,3
+</code></pre></td></tr></table>
+</div>
+</div><p><code>函数名.__closure__</code> 在函数是闭包函数时，返回一个cell元素；不是闭包时，返回None。上例中func1、func2都不是闭包，func3是闭包，区别在于func3中引入了func2中的变量，<strong>可见闭包的特点就是内部函数引用了外部函数中的变量。</strong></p>
+<p>另可知，闭包及嵌套函数执行顺序为，内部函数只会被定义，只有当内部函数被调用时才执行其内部代码。</p>
+<h5 id="装饰器示例" class="headerLink">
+    <a href="#%e8%a3%85%e9%a5%b0%e5%99%a8%e7%a4%ba%e4%be%8b" class="header-mark"></a>装饰器示例</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def add_tag(func):
+    def add_func(*args,**kwargs):
+        return f&#39;&lt;sb&gt; {func(*args,**kwargs)}&#39;
+    return add_func
+
+def print_text(name):
+    return f&#39;{name}&#39;
+
+@add_tag
+def print_text2(name):
+    return f&#39;{name}&#39;
+
+print(add_tag(print_text)(&#39;wxz&#39;))
+print(print_text2(&#39;wxz&#39;))
+# &lt;sb&gt; wxz
+# &lt;sb&gt; wxz
+
+print(print_text3.__name__) 
+# add_func
+</code></pre></td></tr></table>
+</div>
+</div><p>add_tag(print_text)(&lsquo;wxz&rsquo;)和print_text2(&lsquo;wxz&rsquo;)是等价的，装饰器实际就是嵌套函数（吗？其实还是有些不一样，见下面）。</p>
+<p>另外可以看到执行func.__name__返回的是装饰器内的add_func方法名，<strong>原因是 add_func 覆写了 print_text3 函数的 <strong>name</strong>、<strong>doc</strong>、<strong>modual</strong> 三个属性。改回来的话可以使用Python 中的 <code>functools.wraps</code> 装饰器</strong>，如下面的代码。</p>
+<h5 id="带参数的装饰器示例" class="headerLink">
+    <a href="#%e5%b8%a6%e5%8f%82%e6%95%b0%e7%9a%84%e8%a3%85%e9%a5%b0%e5%99%a8%e7%a4%ba%e4%be%8b" class="header-mark"></a>带参数的装饰器示例</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def add_anytag(tagname):
+    def add_tag(func):
+
+        @wraps(func)
+        def add_func(*args, **kwargs):
+            return f&#39;&lt;{tagname}&gt; {func(*args, **kwargs)} &lt;/{tagname}&gt;&#39;
+        return add_func
+    return add_tag
+
+def print_text33(name):
+    return f&#39;{name}&#39;
+
+@add_anytag(tagname=&#39;div&#39;)
+def print_text3(name):
+    return f&#39;{name}&#39;
+
+print(add_anytag(&#39;div&#39;)(print_text33)(&#39;baba&#39;))
+print(print_text3(&#39;wxz&#39;))
+# &lt;div&gt; baba &lt;/div&gt;
+# &lt;div&gt; wxz &lt;/div&gt;
+
+print(print_text3.__name__) 
+# print_text3
+</code></pre></td></tr></table>
+</div>
+</div><p>add_anytag(&lsquo;div&rsquo;)(print_text33)(&lsquo;baba&rsquo;)和print_text3(&lsquo;wxz&rsquo;)效果也是等价的。</p>
+<h5 id="如果想直接访问原始的无装饰器的函数怎么办httpspython3-cookbookreadthedocsiozh_cnlatestc09p03_unwrapping_decoratorhtml" class="headerLink">
+    <a href="#%e5%a6%82%e6%9e%9c%e6%83%b3%e7%9b%b4%e6%8e%a5%e8%ae%bf%e9%97%ae%e5%8e%9f%e5%a7%8b%e7%9a%84%e6%97%a0%e8%a3%85%e9%a5%b0%e5%99%a8%e7%9a%84%e5%87%bd%e6%95%b0%e6%80%8e%e4%b9%88%e5%8a%9ehttpspython3-cookbookreadthedocsiozh_cnlatestc09p03_unwrapping_decoratorhtml" class="header-mark"></a><a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c09/p03_unwrapping_decorator.html" target="_blank" rel="noopener noreffer">如果想直接访问原始的无装饰器的函数怎么办？</a></h5><h5 id="装饰器到底是什么" class="headerLink">
+    <a href="#%e8%a3%85%e9%a5%b0%e5%99%a8%e5%88%b0%e5%ba%95%e6%98%af%e4%bb%80%e4%b9%88" class="header-mark"></a>装饰器到底是什么</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def real_decorator(func):
+    print(&#39;【装饰器】：当装饰器被定义时我就会被加载。&#39;)
+    def inner_decorator(*args,  **kwargs):
+        print(&#39;【装饰器】：func执行前调用&#39;)
+        func()
+        print(&#39;【装饰器】：func执行后调用&#39;)
+    return inner_decorator
+
+print(&#39;func定义前我会打印出来&#39;)
+
+@real_decorator
+def test_decorator():
+    print(&#39;【func】：我是func&#39;)
+
+print(&#39;func定义后我会打印出来&#39;)
+
+test_decorator()
+
+print(&#39;func执行后我会打印出来&#39;)
+
+# func定义前我会打印出来
+# 【装饰器】：当装饰器被定义时我就会被加载。
+# func定义后我会打印出来
+# 【装饰器】：func执行前调用
+# 【func】：我是func
+# 【装饰器】：func执行后调用
+# func执行后我会打印出来
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>由上面可见，装饰器real_decorator在被定义到test_decorator头上时就被执行了。它的本质相当于执行下面这行代码</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 定义一个变量do_real_decorator
+do_real_decorator = real_decorator(test_decorator)
+</code></pre></td></tr></table>
+</div>
+</div><p>所以real_decorator里面的print在test_decorator执行前就执行了。下面看下多个装饰器的情况。</p>
+<h5 id="多个装饰器" class="headerLink">
+    <a href="#%e5%a4%9a%e4%b8%aa%e8%a3%85%e9%a5%b0%e5%99%a8" class="header-mark"></a>多个装饰器</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def set_func1(func):
+    print(&#39;外壁巴布1&#39;)
+    def wrapper1(*args,**kwargs):
+        print(&#39;装饰内容开始1&#39;)
+        func(*args, **kwargs)
+        print(&#39;装饰内容结束1&#39;)
+    print(&#39;外壁巴布11&#39;)
+    return wrapper1
+
+
+# 定义第二个装饰器
+def set_func2(func):
+    print(&#39;外壁巴布2&#39;)
+    def wrapper2(*args,**kwargs):
+        print(&#39;装饰内容开始2&#39;)
+        func(*args, **kwargs)
+        print(&#39;装饰内容结束2&#39;)
+    print(&#39;外壁巴布22&#39;)
+    return wrapper2
+
+# 定义第二个装饰器
+def set_func3(func):
+    print(&#39;外壁巴布3&#39;)
+    def wrapper3(*args,**kwargs):
+        print(&#39;装饰内容开始3&#39;)
+        func(*args, **kwargs)
+        print(&#39;装饰内容结束3&#39;)
+    print(&#39;外壁巴布33&#39;)
+    return wrapper3
+
+@set_func1
+@set_func2
+@set_func3
+def show():
+    print(&#39;Show Run....&#39;)
+
+def show2():
+    print(&#39;show run2&#39;)
+
+print(&#39;》》》》》》》》》》》》》》》》》我是分割线，免得你看懵逼了&#39;)
+
+show()
+
+# 外壁巴布3
+# 外壁巴布33
+# 外壁巴布2
+# 外壁巴布22
+# 外壁巴布1
+# 外壁巴布11
+# 》》》》》》》》》》》》》》》》》我是分割线，免得你看懵逼了
+# 装饰内容开始1
+# 装饰内容开始2
+# 装饰内容开始3
+# Show Run....
+# 装饰内容结束3
+# 装饰内容结束2
+# 装饰内容结束1
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，<strong>多个装饰器被定义的顺序是从下到上，转换成嵌套函数则是，最下层是最内层</strong>。</p>
+<p>set_func1(set_func2(set_func3(show2)))() 和 show() 是等价的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">def show2():
+    print(&#39;show run2&#39;)
+
+set_func1(set_func2(set_func3(show2)))()
+
+# 外壁巴布3
+# 外壁巴布33
+# 外壁巴布2
+# 外壁巴布22
+# 外壁巴布1
+# 外壁巴布11
+# 装饰内容开始1
+# 装饰内容开始2
+# 装饰内容开始3
+# show run2
+# 装饰内容结束3
+# 装饰内容结束2
+# 装饰内容结束1
+</code></pre></td></tr></table>
+</div>
+</div></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-06-30</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/" data-title="Python嵌套函数、闭包、装饰器"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/" data-title="Python嵌套函数、闭包、装饰器"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="https://wxzforest.github.io/blog/python%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85%E8%A3%85%E9%A5%B0%E5%99%A8/" data-title="Python嵌套函数、闭包、装饰器"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/blog/pycharm%E7%94%9F%E6%88%90allureReport%E5%A4%B1%E8%B4%A5/" class="prev" rel="prev" title="Pycharm生成allure report失败"><i class="fas fa-angle-left fa-fw"></i>Pycharm生成allure report失败</a>
+            <a href="/blog/%E7%94%A8%E6%88%B7CA%E8%AF%81%E4%B9%A6%E9%99%90%E5%88%B6/" class="next" rel="next" title="用户CA证书限制">用户CA证书限制<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2017 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/wxzForest" target="_blank" rel="noopener noreferrer">Forest</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div><script>
+                    if('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .register('/sw.min.js', { scope: '/' })
+                            .then(function(registration) {
+                            });
+                
+                        navigator.serviceWorker
+                            .ready
+                            .then(function(registration) {
+                            });
+                    }
+                </script></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js"></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":20},"comment":{},"data":{"desktop-header-typeit":"Forest","mobile-header-typeit":"Forest"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":true,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.1,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true},"twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/lib/twemoji/twemoji.min.js" defer></script><script type="text/javascript" src="/js/twemoji.min.js" defer></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.js"></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/typeit.min.js"></script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></div>
+</body>
+
+</html>
